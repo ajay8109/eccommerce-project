@@ -1,0 +1,242 @@
+export const PRODUCTS = [
+    {
+        id: 1,
+        name: "Wireless Headphones Pro",
+        category: "Electronics",
+        subcategory: "Audio",
+        description: "Experience premium sound quality with active noise cancellation, 30-hour battery life, and superior comfort. Features include Bluetooth 5.0, deep bass enhancement, and foldable design for portability. Perfect for music lovers and professionals.",
+        price: 299.99,
+        rating: 4.5,
+        image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=300&h=220&fit=crop"
+    },
+    {
+        id: 2,
+        name: "Smart Watch Ultra",
+        category: "Electronics",
+        subcategory: "Wearables",
+        description: "Advanced fitness tracking smartwatch with heart rate monitor, GPS tracking, and 7-day battery life. Features water resistance, sleep tracking, step counter, and smartphone integration. Compatible with iOS and Android devices.",
+        price: 449.99,
+        rating: 4.8,
+        image: "https://images.unsplash.com/photo-1523275335684-e3e9995d1d83?w=300&h=220&fit=crop"
+    },
+    {
+        id: 3,
+        name: "Steam Iron Pro",
+        category: "Electronics",
+        subcategory: "Appliances",
+        description: "Professional-grade steam iron with 1800W power, anti-drip technology, and variable temperature control. Features ceramic soleplate, vertical steam function, and auto-shutoff safety. Perfect for all fabric types including delicate materials.",
+        price: 89.99,
+        rating: 4.3,
+        image: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=300&h=220&fit=crop"
+    },
+    {
+        id: 4,
+        name: "Gaming Mouse RGB",
+        category: "Electronics",
+        subcategory: "Computer",
+        description: "High-precision gaming mouse with 16000 DPI sensor, customizable RGB lighting, and 8 programmable buttons. Features ergonomic design, ultra-fast response time, and durable switches. Ideal for competitive gaming and professional use.",
+        price: 79.99,
+        rating: 4.6,
+        image: "https://images.unsplash.com/photo-1615661066889-3f2b6b0c3c1c?w=300&h=220&fit=crop"
+    },
+    {
+        id: 5,
+        name: "CPU Cooler Fan",
+        category: "Electronics",
+        subcategory: "Computer",
+        description: "High-performance CPU cooling fan with quiet operation and RGB LED lighting. Features 120mm fan size, hydraulic bearing, and adjustable speed control. Compatible with Intel and AMD sockets for optimal cooling performance.",
+        price: 49.99,
+        rating: 4.4,
+        image: "https://images.unsplash.com/photo-1593477555116-649b9c6b825c?w=300&h=220&fit=crop"
+    },
+    {
+        id: 6,
+        name: "LED Smart Bulb",
+        category: "Electronics",
+        subcategory: "Lighting",
+        description: "WiFi-enabled smart LED bulb with 16 million colors, app control, and voice assistant compatibility. Features scheduling, dimming control, and energy-efficient LED technology. Perfect for smart home automation and mood lighting.",
+        price: 24.99,
+        rating: 4.2,
+        image: "https://images.unsplash.com/photo-1586953208448-953e367b8819?w=300&h=220&fit=crop"
+    },
+    {
+        id: 7,
+        name: "Designer Leather Jacket",
+        category: "Fashion",
+        subcategory: "Outerwear",
+        description: "Premium genuine leather jacket with modern slim fit design. Features full-zip closure, multiple pockets, and quilted lining. Made from high-quality leather with attention to detail. Perfect for casual and formal occasions.",
+        price: 599.99,
+        rating: 4.7,
+        image: "https://images.unsplash.com/photo-1551698618-1d4663c11174?w=300&h=220&fit=crop"
+    },
+    {
+        id: 8,
+        name: "Running Shoes Elite",
+        category: "Sports",
+        subcategory: "Footwear",
+        description: "Professional running shoes with advanced cushioning technology and breathable mesh upper. Features responsive foam midsole, rubber outsole with traction pattern, and lightweight design. Ideal for marathon training and daily running.",
+        price: 189.99,
+        rating: 4.6,
+        image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=300&h=220&fit=crop"
+    },
+    {
+        id: 9,
+        name: "Coffee Maker Deluxe",
+        category: "Home",
+        subcategory: "Kitchen",
+        description: "Programmable coffee maker with thermal carafe and auto-brew functionality. Features 12-cup capacity, adjustable strength settings, and 24-hour programmable timer. Perfect for coffee enthusiasts who want convenience and quality.",
+        price: 129.99,
+        rating: 4.4,
+        image: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=300&h=220&fit=crop"
+    },
+    {
+        id: 10,
+        name: "Yoga Mat Premium",
+        category: "Sports",
+        subcategory: "Fitness",
+        description: "Extra thick non-slip yoga mat with alignment markers and carrying strap. Features 6mm thickness, eco-friendly materials, and superior grip. Perfect for yoga, pilates, and floor exercises. Includes alignment guides for proper posture.",
+        price: 49.99,
+        rating: 4.9,
+        image: "https://images.unsplash.com/photo-1545205597-3d9d02c29597?w=300&h=220&fit=crop"
+    },
+    {
+        id: 11,
+        name: "Winter Coat Classic",
+        category: "Fashion",
+        subcategory: "Outerwear",
+        description: "Warm and stylish winter coat with detachable hood and water-resistant fabric. Features insulated lining, multiple pockets, and adjustable cuffs. Perfect for cold weather protection while maintaining fashion-forward style.",
+        price: 349.99,
+        rating: 4.3,
+        image: "https://images.unsplash.com/photo-1544005263-7e36a669938a?w=300&h=220&fit=crop"
+    },
+    {
+        id: 12,
+        name: "Bluetooth Speaker",
+        category: "Electronics",
+        subcategory: "Audio",
+        description: "Portable waterproof speaker with 360-degree sound and 12-hour battery life. Features IPX7 waterproof rating, built-in microphone, and wireless pairing. Perfect for outdoor activities, pool parties, and home entertainment.",
+        price: 79.99,
+        rating: 4.5,
+        image: "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=300&h=220&fit=crop"
+    },
+    {
+        id: 13,
+        name: "Luxury Skincare Set",
+        category: "Beauty",
+        subcategory: "Skincare",
+        description: "Premium anti-aging skincare set with natural ingredients and clinically proven formulas. Includes cleanser, serum, moisturizer, and eye cream. Suitable for all skin types and dermatologist-tested for safety and effectiveness.",
+        price: 199.99,
+        rating: 4.7,
+        image: "https://images.unsplash.com/photo-1596462502278-27d54b9f5964?w=300&h=220&fit=crop"
+    },
+    {
+        id: 14,
+        name: "Tennis Racket Pro",
+        category: "Sports",
+        subcategory: "Equipment",
+        description: "Professional grade tennis racket with vibration dampening and carbon fiber construction. Features oversized sweet spot, comfortable grip, and tournament-ready performance. Ideal for intermediate to advanced players seeking competitive advantage.",
+        price: 249.99,
+        rating: 4.8,
+        image: "https://images.unsplash.com/photo-1595435934249-5e7be2b3b7ea?w=300&h=220&fit=crop"
+    },
+    {
+        id: 15,
+        name: "Laptop Pro 15\"",
+        category: "Electronics",
+        subcategory: "Computers",
+        description: "High-performance laptop with 16GB RAM, 512GB SSD, and Intel Core i7 processor. Features 15.6-inch Full HD display, backlit keyboard, and all-day battery life. Perfect for work, gaming, and creative projects.",
+        price: 1299.99,
+        rating: 4.6,
+        image: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=300&h=220&fit=crop"
+    },
+    {
+        id: 16,
+        name: "Designer Sunglasses",
+        category: "Fashion",
+        subcategory: "Accessories",
+        description: "Premium UV protection sunglasses with designer frames and polarized lenses. Features 100% UV protection, scratch-resistant coating, and comfortable fit. Perfect for fashion and eye protection in all conditions.",
+        price: 159.99,
+        rating: 4.4,
+        image: "https://images.unsplash.com/photo-1473496169904-658ba7c44d8a?w=300&h=220&fit=crop"
+    },
+    {
+        id: 17,
+        name: "Wireless Gaming Mouse Pro",
+        category: "Electronics",
+        subcategory: "Gaming",
+        description: "Wireless gaming mouse with customizable RGB lighting and 20000 DPI sensor. Features ergonomic design, programmable buttons, and ultra-low latency. Perfect for competitive gaming and professional esports performance.",
+        price: 89.99,
+        rating: 4.7,
+        image: "https://images.unsplash.com/photo-1615661066889-3f2b6b0c3c1c?w=300&h=220&fit=crop"
+    },
+    {
+        id: 18,
+        name: "Fitness Dumbbells Set",
+        category: "Sports",
+        subcategory: "Fitness",
+        description: "Adjustable dumbbell set from 5 to 50 pounds with quick-change weight system. Features ergonomic grip, durable construction, and compact storage. Perfect for home workouts and strength training exercises.",
+        price: 299.99,
+        rating: 4.8,
+        image: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=300&h=220&fit=crop"
+    },
+    {
+        id: 19,
+        name: "Smart Home Hub",
+        category: "Home",
+        subcategory: "Smart Home",
+        description: "Central hub for all your smart home devices with voice control and app integration. Supports Wi-Fi, Zigbee, and Bluetooth protocols. Compatible with major smart home brands for complete home automation.",
+        price: 149.99,
+        rating: 4.3,
+        image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=300&h=220&fit=crop"
+    },
+    {
+        id: 20,
+        name: "Casual Denim Jeans",
+        category: "Fashion",
+        subcategory: "Bottoms",
+        description: "Classic fit denim jeans with stretch comfort and durable fabric. Features five-pocket styling, metal hardware, and reinforced stitching. Perfect for everyday wear with timeless style and comfort.",
+        price: 79.99,
+        rating: 4.5,
+        image: "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=300&h=220&fit=crop"
+    },
+    {
+        id: 21,
+        name: "Tablet 10\" Pro",
+        category: "Electronics",
+        subcategory: "Tablets",
+        description: "High-resolution tablet with stylus support and 10-hour battery life. Features 10.1-inch display, 64GB storage, and front/rear cameras. Perfect for work, entertainment, and creative applications.",
+        price: 599.99,
+        rating: 4.6,
+        image: "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=300&h=220&fit=crop"
+    },
+    {
+        id: 22,
+        name: "Mountain Bike Helmet",
+        category: "Sports",
+        subcategory: "Safety",
+        description: "Lightweight helmet with advanced ventilation system and MIPS technology. Features adjustable fit system, removable visor, and impact-absorbing foam. Certified safety for mountain biking and cycling adventures.",
+        price: 69.99,
+        rating: 4.7,
+        image: "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=300&h=220&fit=crop"
+    },
+    {
+        id: 23,
+        name: "Luxury Watch Classic",
+        category: "Fashion",
+        subcategory: "Accessories",
+        description: "Elegant analog watch with genuine leather strap and Swiss movement. Features sapphire crystal glass, water resistance, and date function. Perfect for formal occasions and everyday sophistication.",
+        price: 899.99,
+        rating: 4.9,
+        image: "https://images.unsplash.com/photo-1523275335684-e3e9995d1d83?w=300&h=220&fit=crop"
+    },
+    {
+        id: 24,
+        name: "Air Purifier Pro",
+        category: "Home",
+        subcategory: "Appliances",
+        description: "HEPA air purifier for large rooms with True HEPA filtration and UV-C light. Features quiet operation, air quality sensor, and automatic mode. Removes 99.97% of allergens and pollutants for clean air.",
+        price: 249.99,
+        rating: 4.5,
+        image: "https://images.unsplash.com/photo-1578922472303-40eb4104cc31?w=300&h=220&fit=crop"
+    }
+];
