@@ -192,6 +192,7 @@ const App = () => {
                             selectedCategory={selectedCategory}
                             selectedSubcategory={selectedSubcategory}
                             priceRange={priceRange}
+                            searchQuery={searchQuery}
                             onAddToCart={handleAddToCart}
                         />
                     </main>

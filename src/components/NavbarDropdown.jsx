@@ -30,7 +30,12 @@ const NavbarDropdown = ({ title, items, icon }) => {
   };
 
   return (
-    <div className="navbar-dropdown" ref={dropdownRef}>
+    <div 
+      className="navbar-dropdown" 
+      ref={dropdownRef}
+      onMouseEnter={() => setIsOpen(true)}
+      onMouseLeave={() => setIsOpen(false)}
+    >
       <button 
         className="dropdown-toggle"
         onClick={toggleDropdown}
@@ -39,7 +44,6 @@ const NavbarDropdown = ({ title, items, icon }) => {
       >
         {icon && <span className="dropdown-icon">{icon}</span>}
         <span>{title}</span>
-        <span className={`dropdown-arrow ${isOpen ? 'open' : ''}`}>▼</span>
       </button>
       
       {isOpen && (

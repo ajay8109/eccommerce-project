@@ -1,20 +1,26 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import ProductCard from './ProductCard';
 
-const ProductGrid = ({ products, selectedCategory, selectedSubcategory, priceRange, onAddToCart }) => {
+const ProductGrid = ({ products, selectedCategory, selectedSubcategory, priceRange, searchQuery, onAddToCart }) => {
     console.log('Filtering products:', { selectedCategory, selectedSubcategory, priceRange });
     
-    const filteredProducts = products.filter(product => {
-        const categoryMatch = selectedCategory === 'All' || product.category === selectedCategory;
-        const subcategoryMatch = selectedSubcategory === 'All' || product.subcategory === selectedSubcategory;
-        const priceMatch = product.price >= priceRange[0] && product.price <= priceRange[1];
-        
-        if (selectedCategory === 'Electronics' && product.category === 'Electronics') {
-            console.log('Electronics product found:', product.name, { categoryMatch, subcategoryMatch, priceMatch });
-        }
-        
-        return categoryMatch && subcategoryMatch && priceMatch;
-    });
+    const filteredProducts = useMemo(() => {
+        return products.filter(product => {
+            const categoryMatch = selectedCategory === 'All' || product.category === selectedCategory;
+            const subcategoryMatch = selectedSubcategory === 'All' || product.subcategory === selectedSubcategory;
+            const priceMatch = product.price >= priceRange[0] && product.price <= priceRange[1];
+            const searchMatch = !searchQuery || 
+                product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                product.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                product.category.toLowerCase().includes(searchQuery.toLowerCase());
+            
+            if (selectedCategory === 'Electronics' && product.category === 'Electronics') {
+                console.log('Electronics product found:', product.name, { categoryMatch, subcategoryMatch, priceMatch, searchMatch });
+            }
+            
+            return categoryMatch && subcategoryMatch && priceMatch && searchMatch;
+        });
+    }, [products, selectedCategory, selectedSubcategory, priceRange, searchQuery]);
     
     console.log('Filtered products count:', filteredProducts.length);
 
