@@ -1,9 +1,12 @@
 import React, { useState, useEffect, createContext } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { PRODUCTS } from './data/products';
 import { ThemeProvider } from './contexts/ThemeContext';
+import { CartProvider } from './contexts/CartContext';
 import Navbar from './components/Navbar';
 import MobileMenu from './components/MobileMenu';
 import HeroSection from './components/HeroSection';
+import ProductCarousel from './components/ProductCarousel';
 import CategoryFilter from './components/CategoryFilter';
 import AdvancedFilter from './components/AdvancedFilter';
 import ProductGrid from './components/ProductGrid';
@@ -11,6 +14,10 @@ import Footer from './components/Footer';
 import CartSidebar from './components/CartSidebar';
 import LoginModal from './components/LoginModal';
 import Toast from './components/Toast';
+import AboutPage from './components/AboutPage';
+import SalePage from './components/SalePage';
+import CategoryPage from './components/CategoryPage';
+import WishlistPage from './components/WishlistPage';
 import './styles.css';
 
 // App Context
@@ -27,6 +34,7 @@ const App = () => {
     const [selectedSubcategory, setSelectedSubcategory] = useState('All');
     const [priceRange, setPriceRange] = useState([0, 1300]);
     const [searchQuery, setSearchQuery] = useState('');
+    const [filteredProducts, setFilteredProducts] = useState(PRODUCTS);
     const [toast, setToast] = useState({ message: '', type: '', show: false });
 
     // Calculate dynamic price range
@@ -37,6 +45,17 @@ const App = () => {
     useEffect(() => {
         setPriceRange([minPrice, maxPrice]);
     }, [minPrice, maxPrice]);
+
+    // Filter products based on search query
+    useEffect(() => {
+        const filtered = searchQuery.trim() === '' 
+            ? PRODUCTS 
+            : PRODUCTS.filter(product => 
+                product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                product.category.toLowerCase().includes(searchQuery.toLowerCase())
+            );
+        setFilteredProducts(filtered);
+    }, [searchQuery]);
 
     // Load data from localStorage on mount
     useEffect(() => {
@@ -154,73 +173,126 @@ const App = () => {
         setSearchQuery(query);
     };
 
+    const handleCategoryChange = (category) => {
+        setSelectedCategory(category);
+    };
+
+    const handleSubcategoryChange = (subcategory) => {
+        setSelectedSubcategory(subcategory);
+    };
+
+    const handlePriceRangeChange = (newRange) => {
+        setPriceRange(newRange);
+    };
+
+    const handleMobileMenuToggle = () => {
+        setIsMobileMenuOpen(!isMobileMenuOpen);
+    };
+
+    const handleCartClick = () => {
+        setIsCartOpen(true);
+    };
+
+    const handleLoginClick = () => {
+        setIsLoginModalOpen(true);
+    };
+
     return (
         <ThemeProvider>
-            <AppContext.Provider value={{ user, cart, handleAddToCart }}>
-                <div className="app-container">
-                    <MobileMenu 
-                        isOpen={isMobileMenuOpen}
-                        onClose={closeMobileMenu}
-                        user={user}
-                        cartCount={cartCount}
-                        onLogout={onLogout}
-                        onCartClick={onCartClick}
-                        onLoginClick={onLoginClick}
-                        onCategoryChange={setSelectedCategory}
-                    />
-                    <Navbar 
-                        user={user}
-                        cartCount={cartCount}
-                        onLogout={handleLogout}
-                        onCartClick={() => setIsCartOpen(true)}
-                        onLoginClick={() => setIsLoginModalOpen(true)}
-                        onCategoryChange={setSelectedCategory}
-                        onMobileMenuToggle={toggleMobileMenu}
-                        priceRange={priceRange}
-                        onPriceRangeChange={setPriceRange}
-                        minPrice={minPrice}
-                        maxPrice={maxPrice}
-                        onSearchChange={handleSearchChange}
-                    />
-                    
-                    <main className="main-content">
-                        <HeroSection />
-                        
-                        <ProductGrid 
-                            id="products"
-                            products={PRODUCTS}
-                            selectedCategory={selectedCategory}
-                            selectedSubcategory={selectedSubcategory}
-                            priceRange={priceRange}
-                            searchQuery={searchQuery}
-                            onAddToCart={handleAddToCart}
-                        />
-                    </main>
-                    
-                    <Footer />
-                    
-                    <CartSidebar 
-                        isOpen={isCartOpen}
-                        onClose={() => setIsCartOpen(false)}
-                        cart={cart}
-                        onUpdateQuantity={updateQuantity}
-                        onRemoveItem={handleRemoveItem}
-                        onCheckout={handleCheckout}
-                    />
-                    
-                    <LoginModal 
-                        isOpen={isLoginModalOpen}
-                        onClose={() => setIsLoginModalOpen(false)}
-                        onLogin={handleLogin}
-                    />
-                    
-                    <Toast 
-                        message={toast.message}
-                        type={toast.type}
-                        show={toast.show}
-                    />
-                </div>
-            </AppContext.Provider>
+            <CartProvider>
+                <Router>
+                    <AppContext.Provider value={{ user, cart, isCartOpen, isLoginModalOpen, isMobileMenuOpen, selectedCategory, selectedSubcategory, priceRange, searchQuery, filteredProducts, toast, handleLogin, handleLogout, handleAddToCart, updateQuantity, handleRemoveItem, handleCheckout, handleCategoryChange, handleSubcategoryChange, handlePriceRangeChange, handleSearchChange, handleCartClick, handleLoginClick, handleMobileMenuToggle }}>
+                        <div className="app">
+                            <Navbar 
+                                user={user}
+                                cartCount={cart.length}
+                                onLogout={handleLogout}
+                                onCartClick={handleCartClick}
+                                onLoginClick={handleLoginClick}
+                                onCategoryChange={handleCategoryChange}
+                                onMobileMenuToggle={handleMobileMenuToggle}
+                                priceRange={priceRange}
+                                onPriceRangeChange={handlePriceRangeChange}
+                                minPrice={minPrice}
+                                maxPrice={maxPrice}
+                                onSearchChange={handleSearchChange}
+                            />
+                            
+                            <MobileMenu 
+                                isOpen={isMobileMenuOpen}
+                                onClose={() => setIsMobileMenuOpen(false)}
+                                onCategoryChange={handleCategoryChange}
+                                onLoginClick={handleLoginClick}
+                            />
+                            
+                            <Routes>
+                                <Route path="/" element={
+                                    <>
+                                        <main className="main-content">
+                                            <HeroSection />
+                                            
+                                            <ProductGrid 
+                                                id="products"
+                                                products={filteredProducts} 
+                                                selectedCategory={selectedCategory}
+                                                selectedSubcategory={selectedSubcategory}
+                                                priceRange={priceRange}
+                                                onAddToCart={handleAddToCart}
+                                            />
+                                        </main>
+                                        <Footer />
+                                    </>
+                                } />
+                                <Route path="/about" element={
+                                    <>
+                                        <AboutPage />
+                                        <Footer />
+                                    </>
+                                } />
+                                <Route path="/sale" element={
+                                    <>
+                                        <SalePage onAddToCart={handleAddToCart} />
+                                        <Footer />
+                                    </>
+                                } />
+                                <Route path="/category" element={
+                                    <>
+                                        <CategoryPage onAddToCart={handleAddToCart} />
+                                        <Footer />
+                                    </>
+                                } />
+                                <Route path="/wishlist" element={
+                                    <>
+                                        <WishlistPage />
+                                        <Footer />
+                                    </>
+                                } />
+                            </Routes>
+                            
+                            <CartSidebar 
+                                isOpen={isCartOpen}
+                                onClose={() => setIsCartOpen(false)}
+                                cart={cart}
+                                onUpdateQuantity={updateQuantity}
+                                onRemoveItem={handleRemoveItem}
+                                onCheckout={handleCheckout}
+                            />
+                            
+                            <LoginModal 
+                                isOpen={isLoginModalOpen}
+                                onClose={() => setIsLoginModalOpen(false)}
+                                onLogin={handleLogin}
+                            />
+                            
+                            <Toast 
+                                message={toast.message}
+                                type={toast.type}
+                                show={toast.show}
+                            />
+                        </div>
+                    </AppContext.Provider>
+                </Router>
+            </CartProvider>
         </ThemeProvider>
     );
 };

@@ -1,13 +1,22 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTheme } from '../contexts/ThemeContext';
 
 const ThemeToggle = ({ className = '' }) => {
     const { theme, toggleTheme, isDark } = useTheme();
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+
+    const handleToggle = () => {
+        toggleTheme();
+    };
 
     return (
         <button
             className={`theme-toggle ${className}`}
-            onClick={toggleTheme}
+            onClick={handleToggle}
             aria-label={`Switch to ${isDark ? 'light' : 'dark'} theme`}
             title={`Switch to ${isDark ? 'light' : 'dark'} theme`}
         >

@@ -1,0 +1,1271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShopZone - Category Page</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Category Page Styles - Dark Navy Theme */
+        :root {
+            --primary-bg: #0f172a;
+            --card-bg: #1e293b;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --accent: #06b6d4;
+            --accent-hover: #0891b2;
+            --border: #2d3748;
+            --shadow: rgba(6, 182, 212, 0.15);
+            --success: #10b981;
+            --warning: #f59e0b;
+            --gradient-start: #0f172a;
+            --gradient-end: #1e293b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--primary-bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .category-page {
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
+        }
+
+        /* Category Header Section */
+        .category-header {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .category-banner {
+            background: linear-gradient(135deg, var(--primary-bg) 0%, var(--card-bg) 50%, var(--primary-bg) 100%);
+            padding: 3rem 2rem;
+            position: relative;
+        }
+
+        .category-banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(6, 182, 212, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(6, 182, 212, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(6, 182, 212, 0.05) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .category-banner-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .breadcrumb-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .breadcrumb-link:hover {
+            color: var(--accent);
+        }
+
+        .breadcrumb-separator {
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        .breadcrumb-current {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .category-info {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .category-name {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        .product-count-badge {
+            background: var(--accent);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(6, 182, 212, 0.3);
+        }
+
+        /* Main Content Layout */
+        .category-content {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 2rem;
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Filter Sidebar */
+        .filter-sidebar {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            height: fit-content;
+            position: sticky;
+            top: 2rem;
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 20px var(--shadow);
+        }
+
+        .filter-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .filter-header h3 {
+            color: var(--text-primary);
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .filter-section {
+            margin-bottom: 2rem;
+        }
+
+        .filter-section h4 {
+            color: var(--text-primary);
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        /* Price Range */
+        .price-range {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .price-inputs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .price-input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .price-input-group label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .price-input-group input {
+            background: var(--primary-bg);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            padding: 0.75rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .price-input-group input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px rgba(6, 182, 212, 0.2);
+        }
+
+        .price-slider {
+            margin-top: 0.5rem;
+        }
+
+        .slider {
+            width: 100%;
+            height: 6px;
+            background: var(--border);
+            border-radius: 3px;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: var(--accent);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .slider::-webkit-slider-thumb:hover {
+            background: var(--accent-hover);
+            transform: scale(1.1);
+        }
+
+        /* Brand Checkboxes */
+        .brand-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .brand-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: background 0.3s ease;
+        }
+
+        .brand-checkbox:hover {
+            background: rgba(6, 182, 212, 0.1);
+        }
+
+        .brand-checkbox input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--accent);
+            cursor: pointer;
+        }
+
+        .brand-name {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .brand-count {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+
+        /* Rating Options */
+        .rating-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .rating-option {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: background 0.3s ease;
+        }
+
+        .rating-option:hover {
+            background: rgba(6, 182, 212, 0.1);
+        }
+
+        .rating-option input[type="radio"] {
+            accent-color: var(--accent);
+            cursor: pointer;
+        }
+
+        .rating-stars {
+            color: #fbbf24;
+            font-size: 0.9rem;
+        }
+
+        /* Availability Options */
+        .availability-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .availability-option {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: background 0.3s ease;
+        }
+
+        .availability-option:hover {
+            background: rgba(6, 182, 212, 0.1);
+        }
+
+        .availability-option input[type="radio"] {
+            accent-color: var(--accent);
+            cursor: pointer;
+        }
+
+        .availability-option span {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        /* Clear Filters Button */
+        .clear-filters-btn {
+            width: 100%;
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 0.875rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .clear-filters-btn:hover {
+            background: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(6, 182, 212, 0.3);
+        }
+
+        /* Main Product Area */
+        .category-main {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        /* Sort & View Controls */
+        .sort-view-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background: var(--card-bg);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .sort-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .results-count {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .sort-dropdown {
+            background: var(--primary-bg);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .sort-dropdown:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px rgba(6, 182, 212, 0.2);
+        }
+
+        .view-controls {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .view-btn {
+            background: var(--primary-bg);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .view-btn.active {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+
+        .view-btn:hover {
+            border-color: var(--accent);
+            color: var(--text-primary);
+        }
+
+        /* Product Grid/List */
+        .products-container {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .products-container.grid {
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        }
+
+        .products-container.list {
+            grid-template-columns: 1fr;
+        }
+
+        .category-product-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid var(--border);
+            position: relative;
+        }
+
+        .category-product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 32px var(--shadow);
+            border-color: var(--accent);
+        }
+
+        .product-image-container {
+            position: relative;
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .product-image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .product-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(6, 182, 212, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .category-product-card:hover .product-overlay {
+            opacity: 1;
+        }
+
+        .badge {
+            position: absolute;
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            z-index: 10;
+        }
+
+        .badge.new {
+            top: 1rem;
+            left: 1rem;
+            background: var(--success);
+            color: white;
+        }
+
+        .badge.hot {
+            top: 1rem;
+            left: 1rem;
+            background: var(--warning);
+            color: white;
+        }
+
+        .badge.sale {
+            top: 1rem;
+            left: 1rem;
+            background: var(--accent);
+            color: white;
+        }
+
+        .quick-add-btn,
+        .wishlist-btn {
+            position: absolute;
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 0.5rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .quick-add-btn {
+            bottom: 1rem;
+            right: 1rem;
+        }
+
+        .wishlist-btn {
+            top: 1rem;
+            right: 1rem;
+            background: transparent;
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+
+        .category-product-card:hover .quick-add-btn,
+        .category-product-card:hover .wishlist-btn {
+            opacity: 1;
+        }
+
+        .quick-add-btn:hover {
+            background: var(--accent-hover);
+            transform: scale(1.05);
+        }
+
+        .wishlist-btn:hover {
+            background: var(--warning);
+            color: white;
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+
+        .product-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 0 0 0.5rem 0;
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .product-brand {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin: 0 0 0.75rem 0;
+            font-weight: 500;
+        }
+
+        .product-rating {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin: 0 0 0.75rem 0;
+        }
+
+        .stars {
+            display: flex;
+            gap: 0.1rem;
+        }
+
+        .star {
+            color: #fbbf24;
+            font-size: 0.9rem;
+        }
+
+        .star.filled {
+            color: #fbbf24;
+        }
+
+        .star.empty {
+            color: var(--border);
+        }
+
+        .rating-count {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+
+        .product-price {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .current-price {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .original-price {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            text-decoration: line-through;
+        }
+
+        .discount-percent {
+            background: var(--accent);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 2rem;
+            padding: 2rem;
+            background: var(--card-bg);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .pagination-btn {
+            background: var(--primary-bg);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .pagination-btn:hover:not(:disabled) {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+
+        .pagination-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .pagination-numbers {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .pagination-number {
+            background: var(--primary-bg);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .pagination-number.active {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+
+        .pagination-number:hover:not(.active) {
+            background: var(--card-bg);
+            border-color: var(--accent);
+        }
+
+        .pagination-dots {
+            color: var(--text-secondary);
+            padding: 0 0.5rem;
+        }
+
+        /* Category Selection Grid */
+        .category-selection {
+            padding: 3rem 0;
+            background: linear-gradient(135deg, var(--card-bg) 0%, var(--primary-bg) 100%);
+        }
+
+        .selection-title {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 2rem;
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .category-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            text-decoration: none;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+            display: block;
+        }
+
+        .category-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 32px var(--shadow);
+            border-color: var(--accent);
+        }
+
+        .category-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .category-info h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 0 0 0.5rem 0;
+        }
+
+        .category-count {
+            background: var(--accent);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .category-content {
+                grid-template-columns: 260px 1fr;
+                gap: 1.5rem;
+                padding: 1.5rem;
+            }
+            
+            .products-container.grid {
+                grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .category-content {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .filter-sidebar {
+                position: fixed;
+                top: 0;
+                left: -300px;
+                width: 280px;
+                height: 100vh;
+                z-index: 999;
+                transform: translateX(0);
+                transition: transform 0.3s ease;
+            }
+            
+            .filter-sidebar.open {
+                transform: translateX(300px);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .category-content {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+            }
+            
+            .category-banner {
+                padding: 2rem 1rem;
+            }
+            
+            .category-name {
+                font-size: 2rem;
+            }
+            
+            .products-container.grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                gap: 1rem;
+            }
+            
+            .category-product-card {
+                border-radius: 8px;
+            }
+            
+            .product-image-container {
+                height: 160px;
+            }
+            
+            .product-info {
+                padding: 1rem;
+            }
+            
+            .product-name {
+                font-size: 1rem;
+            }
+            
+            .current-price {
+                font-size: 1.1rem;
+            }
+            
+            .pagination {
+                padding: 1rem;
+            }
+            
+            .pagination-btn {
+                padding: 0.5rem 1rem;
+                font-size: 0.85rem;
+            }
+            
+            .pagination-number {
+                width: 35px;
+                height: 35px;
+                font-size: 0.85rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .category-banner {
+                padding: 1.5rem 0.75rem;
+            }
+            
+            .category-name {
+                font-size: 1.5rem;
+            }
+            
+            .product-count-badge {
+                font-size: 0.8rem;
+                padding: 0.4rem 0.8rem;
+            }
+            
+            .filter-sidebar {
+                width: 260px;
+            }
+            
+            .filter-sidebar.open {
+                transform: translateX(260px);
+            }
+            
+            .products-container.grid {
+                grid-template-columns: 1fr;
+                gap: 0.75rem;
+            }
+            
+            .category-product-card {
+                border-radius: 6px;
+            }
+            
+            .product-image-container {
+                height: 140px;
+            }
+            
+            .product-info {
+                padding: 0.75rem;
+            }
+            
+            .product-name {
+                font-size: 0.9rem;
+            }
+            
+            .current-price {
+                font-size: 1.1rem;
+            }
+            
+            .mobile-filter-drawer-toggle {
+                bottom: 1rem;
+                right: 1rem;
+                padding: 0.875rem 1.25rem;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="category-page">
+        <!-- Category Header Section -->
+        <header class="category-header">
+            <div class="category-banner">
+                <div class="category-banner-content">
+                    <nav class="breadcrumb">
+                        <a href="/" class="breadcrumb-link">Home</a>
+                        <span class="breadcrumb-separator">›</span>
+                        <a href="/" class="breadcrumb-link">Category</a>
+                        <span class="breadcrumb-separator">›</span>
+                        <span class="breadcrumb-current">All</span>
+                    </nav>
+                    <div class="category-info">
+                        <h1 class="category-name">All Products</h1>
+                        <div class="product-count-badge">
+                            194 Products
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Category Selection Grid -->
+        <section class="category-selection">
+            <div class="container">
+                <h2 class="selection-title">Shop by Category</h2>
+                <div class="category-grid">
+                    <a href="/category?category=fashion" class="category-card">
+                        <div class="category-icon">👗</div>
+                        <div class="category-info">
+                            <h3>Fashion</h3>
+                            <span class="category-count">42 products</span>
+                        </div>
+                    </a>
+                    <a href="/category?category=home" class="category-card">
+                        <div class="category-icon">🏠</div>
+                        <div class="category-info">
+                            <h3>Home & Living</h3>
+                            <span class="category-count">38 products</span>
+                        </div>
+                    </a>
+                    <a href="/category?category=beauty" class="category-card">
+                        <div class="category-icon">💄</div>
+                        <div class="category-info">
+                            <h3>Beauty</h3>
+                            <span class="category-count">24 products</span>
+                        </div>
+                    </a>
+                    <a href="/category?category=products" class="category-card">
+                        <div class="category-icon">📦</div>
+                        <div class="category-info">
+                            <h3>General Products</h3>
+                            <span class="category-count">90 products</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Content -->
+        <div class="category-content">
+            <!-- Filter Sidebar -->
+            <aside class="filter-sidebar">
+                <div class="filter-header">
+                    <h3>Filters</h3>
+                </div>
+
+                <div class="filter-section">
+                    <h4>Price Range</h4>
+                    <div class="price-range">
+                        <div class="price-inputs">
+                            <div class="price-input-group">
+                                <label>Min</label>
+                                <input type="number" value="0" min="0" max="200000">
+                            </div>
+                            <div class="price-input-group">
+                                <label>Max</label>
+                                <input type="number" value="200000" min="0" max="200000">
+                            </div>
+                        </div>
+                        <div class="price-slider">
+                            <input type="range" min="0" max="200000" value="200000" class="slider">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="filter-section">
+                    <h4>Brand</h4>
+                    <div class="brand-list">
+                        <!-- Sample brands - in real implementation this would be dynamically generated -->
+                        <label class="brand-checkbox">
+                            <input type="checkbox">
+                            <span class="brand-name">Apple</span>
+                            <span class="brand-count">(15)</span>
+                        </label>
+                        <label class="brand-checkbox">
+                            <input type="checkbox">
+                            <span class="brand-name">Samsung</span>
+                            <span class="brand-count">(12)</span>
+                        </label>
+                        <label class="brand-checkbox">
+                            <input type="checkbox">
+                            <span class="brand-name">OnePlus</span>
+                            <span class="brand-count">(8)</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="filter-section">
+                    <h4>Customer Rating</h4>
+                    <div class="rating-options">
+                        <label class="rating-option">
+                            <input type="radio" name="rating" checked>
+                            <span class="rating-stars">
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                & above
+                            </span>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="rating">
+                            <span class="rating-stars">
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                & above
+                            </span>
+                        </label>
+                        <label class="rating-option">
+                            <input type="radio" name="rating">
+                            <span class="rating-stars">
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                & above
+                            </span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="filter-section">
+                    <h4>Availability</h4>
+                    <div class="availability-options">
+                        <label class="availability-option">
+                            <input type="radio" name="availability" checked>
+                            <span>All Products</span>
+                        </label>
+                        <label class="availability-option">
+                            <input type="radio" name="availability">
+                            <span>In Stock</span>
+                        </label>
+                    </div>
+                </div>
+
+                <button class="clear-filters-btn">
+                    Clear All Filters
+                </button>
+            </aside>
+
+            <!-- Main Product Area -->
+            <main class="category-main">
+                <!-- Sort & View Controls -->
+                <div class="sort-view-controls">
+                    <div class="sort-controls">
+                        <span class="results-count">
+                            Showing 1–24 of 194 results
+                        </span>
+                        <select class="sort-dropdown">
+                            <option value="featured">Sort by: Featured</option>
+                            <option value="price-low">Price: Low → High</option>
+                            <option value="price-high">Price: High → Low</option>
+                            <option value="rating">Top Rated</option>
+                            <option value="newest">Newest</option>
+                        </select>
+                    </div>
+                    <div class="view-controls">
+                        <button class="view-btn active">Grid</button>
+                        <button class="view-btn">List</button>
+                    </div>
+                </div>
+
+                <!-- Product Grid -->
+                <div class="products-container grid">
+                    <!-- Sample Product Cards -->
+                    <div class="category-product-card">
+                        <div class="product-image-container">
+                            <img src="https://cdn.dummyjson.com/product-images/beauty/essence-mascara-lash-princess/1.webp" alt="Essence Mascara Lash Princess">
+                            <div class="product-overlay">
+                                <span class="badge new">NEW</span>
+                                <button class="quick-add-btn">Add to Cart</button>
+                                <button class="wishlist-btn">♡</button>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name">Essence Mascara Lash Princess</h3>
+                            <p class="product-brand">Essence</p>
+                            <div class="product-rating">
+                                <div class="stars">
+                                    <span class="star filled">★</span>
+                                    <span class="star filled">★</span>
+                                    <span class="star filled">★</span>
+                                    <span class="star empty">★</span>
+                                    <span class="star empty">★</span>
+                                </div>
+                                <span class="rating-count">(42 reviews)</span>
+                            </div>
+                            <div class="product-price">
+                                <span class="current-price">₹8.99</span>
+                                <span class="original-price">₹9.99</span>
+                                <span class="discount-percent">-10%</span>
+                            </div>
+                            <button class="quick-add-btn">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <div class="category-product-card">
+                        <div class="product-image-container">
+                            <img src="https://cdn.dummyjson.com/product-images/beauty/eyeshadow-palette-mirror/1.webp" alt="Eyeshadow Palette with Mirror">
+                            <div class="product-overlay">
+                                <span class="badge sale">SALE</span>
+                                <button class="quick-add-btn">Add to Cart</button>
+                                <button class="wishlist-btn">♡</button>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name">Eyeshadow Palette with Mirror</h3>
+                            <p class="product-brand">Glamour Beauty</p>
+                            <div class="product-rating">
+                                <div class="stars">
+                                    <span class="star filled">★</span>
+                                    <span class="star filled">★</span>
+                                    <span class="star filled">★</span>
+                                    <span class="star half">★</span>
+                                    <span class="star empty">★</span>
+                                </div>
+                                <span class="rating-count">(28 reviews)</span>
+                            </div>
+                            <div class="product-price">
+                                <span class="current-price">₹16.35</span>
+                                <span class="original-price">₹19.99</span>
+                                <span class="discount-percent">-18%</span>
+                            </div>
+                            <button class="quick-add-btn">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <div class="category-product-card">
+                        <div class="product-image-container">
+                            <img src="https://cdn.dummyjson.com/product-images/smartphones/apple-iphone-14/1.webp" alt="Apple iPhone 14">
+                            <div class="product-overlay">
+                                <span class="badge hot">HOT</span>
+                                <button class="quick-add-btn">Add to Cart</button>
+                                <button class="wishlist-btn">♡</button>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name">Apple iPhone 14</h3>
+                            <p class="product-brand">Apple</p>
+                            <div class="product-rating">
+                                <div class="stars">
+                                    <span class="star filled">★</span>
+                                    <span class="star filled">★</span>
+                                    <span class="star filled">★</span>
+                                    <span class="star filled">★</span>
+                                    <span class="star filled">★</span>
+                                    <span class="star empty">★</span>
+                                </div>
+                                <span class="rating-count">(156 reviews)</span>
+                            </div>
+                            <div class="product-price">
+                                <span class="current-price">₹999.99</span>
+                                <button class="quick-add-btn">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <div class="category-product-card">
+                        <div class="product-image-container">
+                            <img src="https://cdn.dummyjson.com/product-images/laptops/dell-xps-13/1.webp" alt="Dell XPS 13">
+                            <div class="product-overlay">
+                                <button class="quick-add-btn">Add to Cart</button>
+                                <button class="wishlist-btn">♡</button>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name">Dell XPS 13</h3>
+                            <p class="product-brand">Dell</p>
+                            <div class="product-rating">
+                                <div class="stars">
+                                    <span class="star filled">★</span>
+                                    <span class="star filled">★</span>
+                                    <span class="star filled">★</span>
+                                    <span class="star filled">★</span>
+                                    <span class="star empty">★</span>
+                                </div>
+                                <span class="rating-count">(89 reviews)</span>
+                            </div>
+                            <div class="product-price">
+                                <span class="current-price">₹1,299.99</span>
+                                <button class="quick-add-btn">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pagination -->
+                <div class="pagination">
+                    <button class="pagination-btn" disabled>
+                        ← Prev
+                    </button>
+                    
+                    <div class="pagination-numbers">
+                        <button class="pagination-number active">1</button>
+                        <button class="pagination-number">2</button>
+                        <button class="pagination-number">3</button>
+                        <button class="pagination-number">4</button>
+                        <button class="pagination-number">5</button>
+                    </div>
+                    
+                    <button class="pagination-btn">
+                        Next →
+                    </button>
+                </div>
+            </main>
+
+            <!-- Mobile Filter Toggle -->
+            <button class="mobile-filter-drawer-toggle">
+                Filters ☰
+            </button>
+        </div>
+    </div>
+</body>
+</html>

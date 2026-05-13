@@ -1,37 +1,90 @@
 import React from 'react';
 
 const ProductCard = ({ product, onAddToCart }) => {
+    const [isWishlisted, setIsWishlisted] = React.useState(false);
+
     const handleAddToCart = () => {
         onAddToCart(product);
+        // Show toast notification
+        const toast = document.createElement('div');
+        toast.className = 'toast-notification';
+        const productName = product.title || product.name || 'Product';
+        toast.textContent = `Added ${productName} to cart ✓`;
+        document.body.appendChild(toast);
+        
+        setTimeout(() => {
+            toast.remove();
+        }, 3000);
+    };
+
+    const handleWishlist = (e) => {
+        e.stopPropagation();
+        setIsWishlisted(!isWishlisted);
+        
+        // Show toast notification
+        const toast = document.createElement('div');
+        toast.className = 'toast-notification';
+        const productName = product.title || product.name || 'Product';
+        const action = isWishlisted ? 'removed from' : 'added to';
+        toast.textContent = `${productName} ${action} wishlist ✓`;
+        document.body.appendChild(toast);
+        
+        setTimeout(() => {
+            toast.remove();
+        }, 3000);
+    };
+
+    const renderStars = (rating) => {
+        const fullStars = Math.floor(rating);
+        const hasHalfStar = rating % 1 !== 0;
+        
+        return (
+            <div className="stars">
+                {[...Array(fullStars)].map((_, i) => (
+                    <span key={i} className="star filled">★</span>
+                ))}
+                {hasHalfStar && <span className="star half">★</span>}
+                {[...Array(5 - Math.ceil(rating))].map((_, i) => (
+                    <span key={i} className="star empty">★</span>
+                ))}
+            </div>
+        );
     };
 
     return (
         <div className="product-card">
             <div className="product-image-container">
-                <img src={product.image} alt={product.name} className="product-image" />
-                <div className="product-badge">Bestseller</div>
+                <img src={product.thumbnail} alt={product.title} className="product-image" />
+                <button 
+                    className={`wishlist-btn ${isWishlisted ? 'wishlisted' : ''}`}
+                    onClick={handleWishlist}
+                    aria-label="Add to wishlist"
+                >
+                    {isWishlisted ? '❤️' : '🤍'}
+                </button>
+                <div className="product-overlay">
+                    <button className="quick-view-btn">Quick View</button>
+                </div>
             </div>
             <div className="product-info">
                 <span className="product-category">{product.category}</span>
-                <h3 className="product-name">{product.name}</h3>
-                <div className="product-rating">
-                    <div className="stars">
-                        {'⭐'.repeat(Math.floor(product.rating))}
-                        <span className="rating-text">({product.rating})</span>
-                    </div>
-                    <span className="rating-count">(1,234)</span>
-                </div>
+                <h3 className="product-name">{product.title}</h3>
+                {renderStars(product.rating)}
                 <div className="product-price-section">
-                    <div className="product-price">${product.price}</div>
-                    <div className="product-original-price">${(product.price * 1.3).toFixed(2)}</div>
-                    <div className="product-discount">30% off</div>
+                    <div className="product-price">₹{product.price.toFixed(2)}</div>
+                    {product.discountPercentage > 0 && (
+                        <>
+                            <div className="product-original-price">₹{(product.price * (1 + product.discountPercentage/100)).toFixed(2)}</div>
+                            <div className="product-discount">{product.discountPercentage}% off</div>
+                        </>
+                    )}
                 </div>
-                <div className="product-delivery">
-                    <span className="delivery-icon">🚚</span>
-                    <span className="delivery-text">Free delivery</span>
-                </div>
-                <button className="add-to-cart-btn" onClick={handleAddToCart}>
-                    Add to Cart
+                <button 
+                    className="add-to-cart-btn" 
+                    onClick={handleAddToCart}
+                    disabled={product.stock <= 0}
+                >
+                    {product.stock <= 0 ? 'Out of Stock' : 'Add to Cart'}
                 </button>
             </div>
         </div>

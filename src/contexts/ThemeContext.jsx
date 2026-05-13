@@ -11,7 +11,7 @@ export const useTheme = () => {
 };
 
 export const ThemeProvider = ({ children }) => {
-    const [theme, setTheme] = useState('light');
+    const [theme, setTheme] = useState('dark');
 
     // Load theme from localStorage on mount
     useEffect(() => {
@@ -19,8 +19,8 @@ export const ThemeProvider = ({ children }) => {
         if (savedTheme) {
             setTheme(savedTheme);
         } else {
-            // Default to light theme
-            setTheme('light');
+            // Default to dark theme
+            setTheme('dark');
         }
     }, []);
 

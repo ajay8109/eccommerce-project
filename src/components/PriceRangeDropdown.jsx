@@ -60,8 +60,9 @@ const PriceRangeDropdown = ({ priceRange, onPriceRangeChange, minPrice, maxPrice
 
     return (
         <div className="price-range-dropdown" ref={dropdownRef}>
-            <button className="price-range-button" onClick={toggleDropdown}>
-                <span className="price-range-text">price</span>
+            <button className="nav-button price-button" onClick={toggleDropdown}>
+                <span className="nav-icon">💰</span>
+                <span className="nav-label">Price</span>
                 <span className={`dropdown-arrow ${isOpen ? 'open' : ''}`}>▼</span>
             </button>
 

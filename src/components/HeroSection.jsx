@@ -1,6 +1,11 @@
 import React from 'react';
+import ProductCarousel from './ProductCarousel';
 
 const HeroSection = () => {
+    const handleAddToCart = (product) => {
+        // This will be handled by the CartContext
+        console.log('Product added to cart from hero:', product.title);
+    };
     const scrollToProducts = () => {
         document.getElementById('products').scrollIntoView({ behavior: 'smooth' });
     };
@@ -35,9 +40,7 @@ const HeroSection = () => {
                     </div>
                 </div>
                 <div className="hero-image">
-                    <div className="hero-image-placeholder">
-                        <span className="hero-image-text">Premium Products</span>
-                    </div>
+                    <ProductCarousel onAddToCart={handleAddToCart} />
                 </div>
             </div>
         </section>

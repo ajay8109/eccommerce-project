@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import NavbarDropdown from './NavbarDropdown';
 import MobileMenu from './MobileMenu';
 import ThemeToggle from './ThemeToggle';
-import PriceRangeDropdown from './PriceRangeDropdown';
+import PriceRangeSlider from './PriceRangeSlider';
+import CartDrawer from './CartDrawer';
 
 const Navbar = ({ user, cartCount, onLogout, onCartClick, onLoginClick, onCategoryChange, onMobileMenuToggle, priceRange, onPriceRangeChange, minPrice, maxPrice, onSearchChange }) => {
     const [searchQuery, setSearchQuery] = useState('');
+    const [isCartOpen, setIsCartOpen] = useState(false);
+    const location = useLocation();
 
     const scrollToSection = (sectionId) => {
         const element = document.getElementById(sectionId);
@@ -18,7 +22,13 @@ const Navbar = ({ user, cartCount, onLogout, onCartClick, onLoginClick, onCatego
         if (onCategoryChange) {
             onCategoryChange(category);
         }
-        scrollToSection('products');
+    };
+
+    const handleCartClick = () => {
+        setIsCartOpen(true);
+        if (onCartClick) {
+            onCartClick();
+        }
     };
 
     const handleSearchChange = (e) => {
@@ -114,71 +124,64 @@ const Navbar = ({ user, cartCount, onLogout, onCartClick, onLoginClick, onCatego
     ];
 
     return (
-        <nav className="navbar">
-            <div className="navbar-container">
-                <a href="#" className="logo">
-                    <span className="logo-icon">🛍️</span>
-                    ShopZone
-                </a>
-                
-                <ul className="nav-links">
-                    <li><a href="#home" onClick={() => scrollToSection('home')}>Home</a></li>
-                    <li>
-                            <NavbarDropdown 
-                                title="browse" 
-                                items={browseMenuItems}
-                                icon=""
+        <>
+            <nav className="navbar">
+                <div className="navbar-container">
+                    <Link to="/" className="logo">
+                        <span className="logo-icon">🛍️</span>
+                        ShopZone
+                    </Link>
+                    
+                    <ul className="nav-links">
+                        <li><Link to="/" onClick={() => scrollToSection('home')}>Home</Link></li>
+                        <li><Link to="/category">Category</Link></li>
+                        <li><Link to="/about">About</Link></li>
+                    </ul>
+                    
+                    <div className="nav-actions">
+                        <div className="search-container">
+                            <input 
+                                type="text" 
+                                placeholder="Search products..." 
+                                className="search-input"
+                                value={searchQuery}
+                                onChange={handleSearchChange}
                             />
-                        </li>
-                    <li><a href="#about" onClick={() => scrollToSection('about')}>About</a></li>
-                </ul>
-                
-                <div className="nav-actions">
-                    <div className="search-container">
-                        <input 
-                            type="text" 
-                            placeholder="Search products..." 
-                            className="search-input"
-                            value={searchQuery}
-                            onChange={handleSearchChange}
-                        />
-                        <span className="search-icon">🔍</span>
+                            <span className="search-icon">🔍</span>
+                        </div>
+                        
+                        <ThemeToggle className="desktop-theme-toggle" />
+                        
+                        <Link to="/sale" className="sale-badge">
+                            <span className="sale-text">SALE</span>
+                        </Link>
+                        
+                        <div className="nav-button cart-button" onClick={onCartClick}>
+                            <span className="nav-icon">🛒</span>
+                            <span className="nav-label">Cart</span>
+                            {cartCount > 0 && <span className="nav-badge">{cartCount}</span>}
+                        </div>
+                        
+                        {user ? (
+                                <div className="nav-button account-button">
+                                    <span className="nav-icon">👤</span>
+                                    <span className="nav-label">Account</span>
+                                </div>
+                            ) : (
+                                <div className="nav-button account-button" onClick={onLoginClick}>
+                                    <span className="nav-icon">👤</span>
+                                    <span className="nav-label">Login</span>
+                                </div>
+                            )}
+                        
+                        <button className="mobile-menu-toggle" onClick={onMobileMenuToggle}>
+                            ☰
+                        </button>
                     </div>
-                    
-                    <ThemeToggle className="desktop-theme-toggle" />
-                    
-                    <PriceRangeDropdown 
-                        priceRange={priceRange}
-                        onPriceRangeChange={onPriceRangeChange}
-                        minPrice={minPrice}
-                        maxPrice={maxPrice}
-                    />
-                    
-                    <div className="cart-icon" onClick={onCartClick}>
-                        <span className="cart-text">cart</span>
-                        {cartCount > 0 && <span className="cart-count">{cartCount}</span>}
-                    </div>
-                    
-                    {user ? (
-                            <NavbarDropdown 
-                                title="account" 
-                                items={userMenuItems}
-                                icon=""
-                            />
-                        ) : (
-                            <NavbarDropdown 
-                                title="account" 
-                                items={guestMenuItems}
-                                icon=""
-                            />
-                        )}
-                    
-                    <button className="mobile-menu-toggle" onClick={onMobileMenuToggle}>
-                        ☰
-                    </button>
                 </div>
-            </div>
-        </nav>
+            </nav>
+            <CartDrawer isOpen={isCartOpen} setIsOpen={setIsCartOpen} />
+        </>
     );
 };
 
