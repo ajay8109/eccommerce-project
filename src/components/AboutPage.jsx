@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './AboutPage.css';
 
 const AboutPage = () => {
@@ -247,8 +248,8 @@ const AboutPage = () => {
                         <h2 className="cta-title">Ready to Start Shopping?</h2>
                         <p className="cta-description">Join thousands of satisfied customers and experience the best in online shopping.</p>
                         <div className="cta-buttons">
-                            <button className="cta-button primary">Start Shopping</button>
-                            <button className="cta-button secondary">Contact Us</button>
+                            <Link to="/#products" className="cta-button primary">Start Shopping</Link>
+                            <Link to="/contact" className="cta-button secondary">Contact Us</Link>
                         </div>
                     </div>
                 </div>

@@ -1,8 +1,10 @@
 import React, { useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import ThemeToggle from './ThemeToggle';
 
 const MobileMenu = ({ isOpen, onClose, user, cartCount, onLogout, onCartClick, onLoginClick, onCategoryChange }) => {
     const menuRef = useRef(null);
+    const navigate = useNavigate();
 
     // Close menu when clicking outside
     useEffect(() => {
@@ -176,7 +178,10 @@ const MobileMenu = ({ isOpen, onClose, user, cartCount, onLogout, onCartClick, o
                             <span className="mobile-menu-item-icon">❓</span>
                             <span className="mobile-menu-item-text">Help & Support</span>
                         </div>
-                        <div className="mobile-menu-item" onClick={() => console.log('Contact clicked')}>
+                        <div className="mobile-menu-item" onClick={() => {
+                            navigate('/contact');
+                            onClose();
+                        }}>
                             <span className="mobile-menu-item-icon">📞</span>
                             <span className="mobile-menu-item-text">Contact Us</span>
                         </div>

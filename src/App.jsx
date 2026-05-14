@@ -18,6 +18,7 @@ import AboutPage from './components/AboutPage';
 import SalePage from './components/SalePage';
 import CategoryPage from './components/CategoryPage';
 import WishlistPage from './components/WishlistPage';
+import ContactPage from './components/ContactPage';
 import './styles.css';
 
 // App Context
@@ -59,7 +60,7 @@ const App = () => {
 
     // Load data from localStorage on mount
     useEffect(() => {
-        const savedUser = localStorage.getItem('user');
+        const savedUser = localStorage.getItem('currentUser');
         const savedCart = localStorage.getItem('cart');
         
         if (savedUser) {
@@ -89,13 +90,13 @@ const App = () => {
 
     const handleLogin = (userData) => {
         setUser(userData);
-        localStorage.setItem('user', JSON.stringify(userData));
+        localStorage.setItem('currentUser', JSON.stringify(userData));
         showToast('Login successful! Welcome back!');
     };
 
     const handleLogout = () => {
         setUser(null);
-        localStorage.removeItem('user');
+        localStorage.removeItem('currentUser');
         showToast('Logged out successfully');
     };
 
@@ -264,6 +265,12 @@ const App = () => {
                                 <Route path="/wishlist" element={
                                     <>
                                         <WishlistPage />
+                                        <Footer />
+                                    </>
+                                } />
+                                <Route path="/contact" element={
+                                    <>
+                                        <ContactPage />
                                         <Footer />
                                     </>
                                 } />
