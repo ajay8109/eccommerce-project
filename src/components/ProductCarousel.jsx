@@ -2,26 +2,14 @@ import React, { useState, useEffect, useRef } from 'react';
 import { PRODUCTS } from '../data/products';
 import ProductDetailModal from './ProductDetailModal';
 
-// Filter products for maximum offers (high discount) and bestsellers (high rating)
 const getFeaturedProducts = () => {
     if (!PRODUCTS || PRODUCTS.length === 0) return [];
-    
-    // Sort by discount percentage (highest first) and rating (highest first)
     const sortedByDiscount = [...PRODUCTS].sort((a, b) => b.discountPercentage - a.discountPercentage);
     const sortedByRating = [...PRODUCTS].sort((a, b) => b.rating - a.rating);
-    
-    // Get top products with highest discounts (minimum 15% discount)
     const maxDiscountProducts = sortedByDiscount.filter(p => p.discountPercentage >= 15).slice(0, 4);
-    
-    // Get top products with highest ratings (minimum 4.5 rating)
     const bestsellerProducts = sortedByRating.filter(p => p.rating >= 4.5).slice(0, 4);
-    
-    // Combine and remove duplicates, limit to 8 products
     const featuredProducts = [...maxDiscountProducts, ...bestsellerProducts];
-    const uniqueProducts = featuredProducts.filter((product, index, self) => 
-        index === self.findIndex((p) => p.id === product.id)
-    );
-    
+    const uniqueProducts = featuredProducts.filter((product, index, self) => index === self.findIndex((p) => p.id === product.id));
     return uniqueProducts.slice(0, 8);
 };
 
@@ -36,170 +24,99 @@ const ProductCarousel = ({ onAddToCart }) => {
 
     useEffect(() => {
         if (!isAutoPlaying) return;
-        
-        const interval = setInterval(() => {
-            setCurrentIndex((prevIndex) => (prevIndex + 1) % products.length);
-        }, 4000);
+        const interval = setInterval(() => { setCurrentIndex((prev) => (prev + 1) % products.length); }, 4000);
         return () => clearInterval(interval);
     }, [isAutoPlaying]);
 
-    const handlePrev = () => {
-        setIsAutoPlaying(false);
-        setCurrentIndex((prevIndex) => 
-            prevIndex === 0 ? products.length - 1 : prevIndex - 1
-        );
-    };
-
-    const handleNext = () => {
-        setIsAutoPlaying(false);
-        setCurrentIndex((prevIndex) => (prevIndex + 1) % products.length);
-    };
-
-    const handleDotClick = (index) => {
-        setIsAutoPlaying(false);
-        setCurrentIndex(index);
-    };
-
+    const handlePrev = () => { setIsAutoPlaying(false); setCurrentIndex((prev) => prev === 0 ? products.length - 1 : prev - 1); };
+    const handleNext = () => { setIsAutoPlaying(false); setCurrentIndex((prev) => (prev + 1) % products.length); };
+    const handleDotClick = (index) => { setIsAutoPlaying(false); setCurrentIndex(index); };
     const handleMouseEnter = () => setIsAutoPlaying(false);
     const handleMouseLeave = () => setIsAutoPlaying(true);
-    const handleViewDetails = (product) => {
-        setSelectedProduct(product);
-        setIsModalOpen(true);
-        setIsAutoPlaying(false);
-    };
-
-    const handleCloseModal = () => {
-        setIsModalOpen(false);
-        setSelectedProduct(null);
-        setIsAutoPlaying(true);
-    };
-
-    const handleModalAddToCart = (product) => {
-        onAddToCart(product);
-        // Show toast notification
-        const toast = document.createElement('div');
-        toast.className = 'toast-notification';
-        toast.textContent = `Added ${product.title} to cart ✓`;
-        document.body.appendChild(toast);
-        
-        setTimeout(() => {
-            toast.remove();
-        }, 3000);
-    };
+    const handleViewDetails = (product) => { setSelectedProduct(product); setIsModalOpen(true); setIsAutoPlaying(false); };
+    const handleCloseModal = () => { setIsModalOpen(false); setSelectedProduct(null); setIsAutoPlaying(true); };
 
     const handleAddToCart = (product) => {
-        // Show toast notification
+        if (onAddToCart) onAddToCart(product);
         const toast = document.createElement('div');
         toast.className = 'toast-notification';
         toast.textContent = `Added ${product.title} to cart ✓`;
         document.body.appendChild(toast);
-        
-        setTimeout(() => {
-            toast.remove();
-        }, 3000);
+        setTimeout(() => { toast.remove(); }, 3000);
     };
 
     const renderStars = (rating) => {
-        const fullStars = Math.floor(rating);
-        const hasHalfStar = rating % 1 !== 0;
-        
+        const full = Math.floor(rating);
+        const half = rating % 1 !== 0;
         return (
-            <div className="stars">
-                {[...Array(fullStars)].map((_, i) => (
-                    <span key={i} className="star filled">★</span>
-                ))}
-                {hasHalfStar && <span className="star half">★</span>}
-                {[...Array(5 - Math.ceil(rating))].map((_, i) => (
-                    <span key={i} className="star empty">★</span>
-                ))}
+            <div className="flex items-center gap-0.5">
+                {[...Array(full)].map((_, i) => <span key={i} className="text-yellow-400 text-xs">★</span>)}
+                {half && <span className="text-yellow-400 text-xs opacity-60">★</span>}
+                {[...Array(5 - Math.ceil(rating))].map((_, i) => <span key={i} className="text-gray-600 text-xs">★</span>)}
             </div>
         );
     };
 
+    if (products.length === 0) return null;
+
     return (
         <>
-        <div className="product-carousel" ref={carouselRef} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-            <div className="carousel-container">
-                <button className="carousel-nav-btn carousel-prev" onClick={handlePrev} aria-label="Previous product">
-                    <span>‹</span>
-                </button>
-                <button className="carousel-nav-btn carousel-next" onClick={handleNext} aria-label="Next product">
-                    <span>›</span>
-                </button>
+        <div className="relative w-full" ref={carouselRef} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+            <div className="relative overflow-hidden rounded-2xl bg-[#1e2235] shadow-2xl shadow-purple-500/10">
+                {/* Nav buttons */}
+                <button className="absolute left-2 sm:left-3 top-1/2 -translate-y-1/2 z-20 w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-black/50 backdrop-blur-sm text-white border-none cursor-pointer hover:bg-black/70 transition-all duration-200 text-lg sm:text-xl" onClick={handlePrev} aria-label="Previous product">‹</button>
+                <button className="absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 z-20 w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-black/50 backdrop-blur-sm text-white border-none cursor-pointer hover:bg-black/70 transition-all duration-200 text-lg sm:text-xl" onClick={handleNext} aria-label="Next product">›</button>
                 
-                <div className="carousel-track">
+                {/* Track */}
+                <div className="relative h-[min(22rem,85svh)] min-h-[280px] sm:h-[400px] lg:h-[420px]">
                     {products.map((product, index) => (
-                        <div 
-                            key={product.id} 
-                            className={`carousel-item ${index === currentIndex ? 'active' : ''}`}
-                            style={{
-                                transform: `translateX(${(index - currentIndex) * 100}%)`,
-                                transition: 'transform 0.5s ease-in-out'
-                            }}
-                        >
-                            <div className="carousel-product-card">
-                                <div className="product-badges">
-                                    {product.discountPercentage >= 20 && (
-                                        <span className="badge badge-offer">Max Offer</span>
-                                    )}
-                                    {product.rating >= 4.8 && (
-                                        <span className="badge badge-bestseller">Bestseller</span>
-                                    )}
+                        <div key={product.id} className={`absolute inset-0 transition-all duration-500 ease-in-out ${index === currentIndex ? 'opacity-100 translate-x-0' : index < currentIndex ? 'opacity-0 -translate-x-full' : 'opacity-0 translate-x-full'}`}>
+                            <div className="h-full flex flex-col">
+                                {/* Badges */}
+                                <div className="absolute top-3 left-3 z-10 flex gap-2">
+                                    {product.discountPercentage >= 20 && <span className="bg-[#ff4d6d] text-white text-[0.6rem] sm:text-xs font-bold px-2 py-1 rounded-full">Max Offer</span>}
+                                    {product.rating >= 4.8 && <span className="bg-amber-500 text-white text-[0.6rem] sm:text-xs font-bold px-2 py-1 rounded-full">Bestseller</span>}
                                 </div>
-                                <div className="carousel-product-image">
-                                    <img src={product.thumbnail} alt={product.title} />
+                                
+                                {/* Image */}
+                                <div className="flex-1 flex items-center justify-center p-4 sm:p-6 bg-gradient-to-b from-[#161929] to-[#1e2235]">
+                                    <img src={product.thumbnail} alt={product.title} className="max-h-[min(9rem,28svh)] sm:max-h-[200px] lg:max-h-[220px] w-auto max-w-full object-contain drop-shadow-2xl" />
                                 </div>
-                                <div className="carousel-product-info">
-                                    <h4>{product.title}</h4>
-                                    <p className="carousel-price">
-                                        ₹{product.price.toFixed(2)}
-                                        {product.discountPercentage > 0 && (
-                                            <span className="discount-badge">-{product.discountPercentage}%</span>
-                                        )}
-                                    </p>
-                                    {renderStars(product.rating)}
-                                    <div className="product-meta">
-                                        {product.rating >= 4.5 && (
-                                            <span className="rating-highlight">⭐ {product.rating} Rating</span>
-                                        )}
+                                
+                                {/* Info */}
+                                <div className="p-4 sm:p-5 space-y-2">
+                                    <h4 className="text-white font-bold text-sm sm:text-base line-clamp-1">{product.title}</h4>
+                                    <div className="flex items-center gap-2">
+                                        <span className="text-green-400 font-bold text-lg">₹{product.price.toFixed(2)}</span>
+                                        {product.discountPercentage > 0 && <span className="bg-red-500 text-white text-xs font-bold px-1.5 py-0.5 rounded">-{Math.round(product.discountPercentage)}%</span>}
                                     </div>
-                                    <button 
-                                        onClick={() => handleAddToCart(product)}
-                                        className="carousel-add-to-cart"
-                                        disabled={product.stock <= 0}
-                                    >
-                                        {product.stock <= 0 ? 'Out of Stock' : 'Add to Cart'}
-                                    </button>
-                                    <button 
-                                        onClick={() => handleViewDetails(product)}
-                                        className="carousel-view-details"
-                                    >
-                                        View Details
-                                    </button>
+                                    <div className="flex items-center gap-2">
+                                        {renderStars(product.rating)}
+                                        {product.rating >= 4.5 && <span className="text-amber-400 text-xs font-medium">⭐ {product.rating}</span>}
+                                    </div>
+                                    <div className="flex gap-2 pt-1">
+                                        <button onClick={() => handleAddToCart(product)} disabled={product.stock <= 0} className={`flex-1 py-2 rounded-lg text-sm font-semibold border-none cursor-pointer transition-all duration-200 active:scale-[0.98] ${product.stock <= 0 ? 'bg-gray-600 text-gray-400 cursor-not-allowed' : 'bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:opacity-90'}`}>
+                                            {product.stock <= 0 ? 'Out of Stock' : 'Add to Cart'}
+                                        </button>
+                                        <button onClick={() => handleViewDetails(product)} className="px-4 py-2 rounded-lg text-sm font-semibold bg-white/5 text-gray-300 border border-gray-700 hover:border-purple-500 hover:text-white cursor-pointer transition-all duration-200">
+                                            Details
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     ))}
                 </div>
                 
-                <div className="carousel-indicators">
+                {/* Indicators */}
+                <div className="flex justify-center gap-1.5 pb-3">
                     {products.map((_, index) => (
-                        <button
-                            key={index}
-                            className={`indicator ${index === currentIndex ? 'active' : ''}`}
-                            onClick={() => handleDotClick(index)}
-                            aria-label={`Go to product ${index + 1}`}
-                        />
+                        <button key={index} className={`w-2 h-2 rounded-full border-none cursor-pointer transition-all duration-300 ${index === currentIndex ? 'bg-purple-500 w-6' : 'bg-gray-600 hover:bg-gray-500'}`} onClick={() => handleDotClick(index)} aria-label={`Go to product ${index + 1}`} />
                     ))}
                 </div>
             </div>
         </div>
-        <ProductDetailModal 
-            product={selectedProduct}
-            isOpen={isModalOpen}
-            onClose={handleCloseModal}
-            onAddToCart={handleModalAddToCart}
-        />
+        <ProductDetailModal product={selectedProduct} isOpen={isModalOpen} onClose={handleCloseModal} onAddToCart={handleAddToCart} />
         </>
     );
 };

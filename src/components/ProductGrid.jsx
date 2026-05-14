@@ -22,39 +22,41 @@ const ProductGrid = ({ products, selectedCategory, selectedSubcategory, priceRan
                 return productsToSort;
         }
     }, [products, sortBy]);
-    
-    console.log('Filtered products count:', sortedProducts.length);
 
     return (
-        <div className="products-section">
-            <div className="products-header">
-                <h2>{selectedCategory === 'All' ? 'All Products' : selectedCategory}</h2>
-                <div className="products-info">
-                    <span className="products-count">{sortedProducts.length} Products</span>
-                    <div className="sort-dropdown">
-                        <select 
-                            className="sort-select" 
-                            value={sortBy}
-                            onChange={(e) => setSortBy(e.target.value)}
-                        >
-                            <option value="featured">Sort by: Featured</option>
-                            <option value="price-low">Price: Low to High</option>
-                            <option value="price-high">Price: High to Low</option>
-                            <option value="newest">Newest First</option>
-                            <option value="rating">Best Rated</option>
-                        </select>
-                    </div>
+        <div className="w-full px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-12 bg-gradient-to-b from-[#0a0f1b] to-[#141824]">
+            {/* Header */}
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 border-b-2 border-gray-800 mb-6">
+                <h2 className="text-xl min-[400px]:text-2xl sm:text-4xl font-bold text-white uppercase tracking-tight break-words">
+                    {selectedCategory === 'All' ? 'ALL PRODUCTS' : selectedCategory}
+                </h2>
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+                    <span className="bg-cyan-500 text-white px-4 py-1.5 rounded-full font-semibold text-sm">
+                        {sortedProducts.length} Products
+                    </span>
+                    <select 
+                        className="bg-[#1e2235] text-white border border-gray-700 rounded-lg px-4 py-2 text-sm font-medium outline-none cursor-pointer focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition-all duration-200 w-full sm:w-auto"
+                        value={sortBy}
+                        onChange={(e) => setSortBy(e.target.value)}
+                    >
+                        <option value="featured">Sort by: Featured</option>
+                        <option value="price-low">Price: Low to High</option>
+                        <option value="price-high">Price: High to Low</option>
+                        <option value="newest">Newest First</option>
+                        <option value="rating">Best Rated</option>
+                    </select>
                 </div>
             </div>
             
+            {/* Grid or Empty State */}
             {sortedProducts.length === 0 ? (
-                <div className="empty-state">
-                    <div className="empty-state-icon">🔍</div>
-                    <h3>No products found</h3>
-                    <p>Try adjusting your filters to see more results</p>
+                <div className="flex flex-col items-center justify-center py-20 gap-4">
+                    <div className="text-6xl">🔍</div>
+                    <h3 className="text-xl font-bold text-white">No products found</h3>
+                    <p className="text-gray-400 text-sm">Try adjusting your filters to see more results</p>
                 </div>
             ) : (
-                <div className="product-grid">
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 min-[400px]:gap-3 sm:gap-4">
                     {sortedProducts.map(product => (
                         <ProductCard 
                             key={product.id} 

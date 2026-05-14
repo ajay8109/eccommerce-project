@@ -203,7 +203,7 @@ const App = () => {
             <CartProvider>
                 <Router>
                     <AppContext.Provider value={{ user, cart, isCartOpen, isLoginModalOpen, isMobileMenuOpen, selectedCategory, selectedSubcategory, priceRange, searchQuery, filteredProducts, toast, handleLogin, handleLogout, handleAddToCart, updateQuantity, handleRemoveItem, handleCheckout, handleCategoryChange, handleSubcategoryChange, handlePriceRangeChange, handleSearchChange, handleCartClick, handleLoginClick, handleMobileMenuToggle }}>
-                        <div className="app">
+                        <div className="min-h-screen bg-[#0f172a] text-white w-full overflow-x-hidden">
                             <Navbar 
                                 user={user}
                                 cartCount={cart.length}
@@ -229,7 +229,7 @@ const App = () => {
                             <Routes>
                                 <Route path="/" element={
                                     <>
-                                        <main className="main-content">
+                                        <main className="pt-[calc(4rem+env(safe-area-inset-top,0px))] lg:pt-[calc(4.375rem+env(safe-area-inset-top,0px))] flex flex-col flex-1 w-full overflow-x-hidden">
                                             <HeroSection />
                                             
                                             <ProductGrid 

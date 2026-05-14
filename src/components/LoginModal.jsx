@@ -2,86 +2,42 @@ import React, { useState } from 'react';
 
 const LoginModal = ({ isOpen, onClose, onLogin }) => {
     const [isLogin, setIsLogin] = useState(true);
-    const [formData, setFormData] = useState({
-        email: '',
-        password: '',
-        firstName: '',
-        lastName: '',
-        confirmPassword: ''
-    });
+    const [formData, setFormData] = useState({ email: '', password: '', firstName: '', lastName: '', confirmPassword: '' });
     const [errors, setErrors] = useState({});
 
-    // Email regex validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    // Password regex: at least 8 characters, 1 uppercase, 1 lowercase, 1 number
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d@$!%*?&]{8,}$/;
 
     const validateForm = () => {
         const newErrors = {};
-
-        if (!formData.email.trim()) {
-            newErrors.email = 'Email is required';
-        } else if (!emailRegex.test(formData.email)) {
-            newErrors.email = 'Please enter a valid email address';
-        }
-
-        if (!formData.password) {
-            newErrors.password = 'Password is required';
-        } else if (!passwordRegex.test(formData.password)) {
-            newErrors.password = 'Password must be at least 8 characters with 1 uppercase, 1 lowercase, and 1 number';
-        }
-
+        if (!formData.email.trim()) newErrors.email = 'Email is required';
+        else if (!emailRegex.test(formData.email)) newErrors.email = 'Please enter a valid email address';
+        if (!formData.password) newErrors.password = 'Password is required';
+        else if (!passwordRegex.test(formData.password)) newErrors.password = 'Password must be at least 8 characters with 1 uppercase, 1 lowercase, and 1 number';
         if (!isLogin) {
-            if (!formData.firstName.trim()) {
-                newErrors.firstName = 'First name is required';
-            }
-            if (!formData.lastName.trim()) {
-                newErrors.lastName = 'Last name is required';
-            }
-            if (!formData.confirmPassword) {
-                newErrors.confirmPassword = 'Please confirm your password';
-            } else if (formData.password !== formData.confirmPassword) {
-                newErrors.confirmPassword = 'Passwords do not match';
-            }
+            if (!formData.firstName.trim()) newErrors.firstName = 'First name is required';
+            if (!formData.lastName.trim()) newErrors.lastName = 'Last name is required';
+            if (!formData.confirmPassword) newErrors.confirmPassword = 'Please confirm your password';
+            else if (formData.password !== formData.confirmPassword) newErrors.confirmPassword = 'Passwords do not match';
         }
-
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData(prev => ({
-            ...prev,
-            [name]: value
-        }));
-        // Clear error for the field being changed
-        if (errors[name]) {
-            setErrors(prev => ({
-                ...prev,
-                [name]: ''
-            }));
-        }
+        setFormData(prev => ({ ...prev, [name]: value }));
+        if (errors[name]) setErrors(prev => ({ ...prev, [name]: '' }));
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        
-        if (!validateForm()) {
-            return;
-        }
-
+        if (!validateForm()) return;
         if (isLogin) {
-            // Login - check if user exists in localStorage
             const users = JSON.parse(localStorage.getItem('users') || '[]');
             const user = users.find(u => u.email === formData.email && u.password === formData.password);
-            
             if (user) {
-                const userData = {
-                    email: user.email,
-                    firstName: user.firstName,
-                    lastName: user.lastName
-                };
+                const userData = { email: user.email, firstName: user.firstName, lastName: user.lastName };
                 localStorage.setItem('currentUser', JSON.stringify(userData));
                 onLogin(userData);
                 onClose();
@@ -90,31 +46,12 @@ const LoginModal = ({ isOpen, onClose, onLogin }) => {
                 setErrors({ email: 'Invalid email or password' });
             }
         } else {
-            // Register - create new user
             const users = JSON.parse(localStorage.getItem('users') || '[]');
-            
-            // Check if email already exists
-            if (users.some(u => u.email === formData.email)) {
-                setErrors({ email: 'Email already registered' });
-                return;
-            }
-
-            const newUser = {
-                email: formData.email,
-                password: formData.password,
-                firstName: formData.firstName,
-                lastName: formData.lastName,
-                createdAt: new Date().toISOString()
-            };
-
+            if (users.some(u => u.email === formData.email)) { setErrors({ email: 'Email already registered' }); return; }
+            const newUser = { email: formData.email, password: formData.password, firstName: formData.firstName, lastName: formData.lastName, createdAt: new Date().toISOString() };
             users.push(newUser);
             localStorage.setItem('users', JSON.stringify(users));
-
-            const userData = {
-                email: newUser.email,
-                firstName: newUser.firstName,
-                lastName: newUser.lastName
-            };
+            const userData = { email: newUser.email, firstName: newUser.firstName, lastName: newUser.lastName };
             localStorage.setItem('currentUser', JSON.stringify(userData));
             onLogin(userData);
             onClose();
@@ -122,117 +59,59 @@ const LoginModal = ({ isOpen, onClose, onLogin }) => {
         }
     };
 
-    const resetForm = () => {
-        setFormData({
-            email: '',
-            password: '',
-            firstName: '',
-            lastName: '',
-            confirmPassword: ''
-        });
-        setErrors({});
-    };
-
-    const toggleMode = () => {
-        setIsLogin(!isLogin);
-        resetForm();
-    };
+    const resetForm = () => { setFormData({ email: '', password: '', firstName: '', lastName: '', confirmPassword: '' }); setErrors({}); };
+    const toggleMode = () => { setIsLogin(!isLogin); resetForm(); };
 
     if (!isOpen) return null;
 
+    const inputClass = (field) => `w-full rounded-lg border ${errors[field] ? 'border-red-500' : 'border-gray-600'} bg-[#1e2235] text-white p-3 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition-all duration-200 text-sm sm:text-base`;
+
     return (
-        <div className="modal-overlay open" onClick={onClose}>
-            <div className="modal" onClick={(e) => e.stopPropagation()}>
-                <div className="modal-header">
-                    <h2 className="modal-title">{isLogin ? 'Login to ShopZone' : 'Create Account'}</h2>
-                    <button className="modal-close" onClick={onClose}>✕</button>
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-[1000] flex items-end sm:items-center justify-center p-0 sm:p-4 pb-[env(safe-area-inset-bottom,0px)] sm:pb-4" onClick={onClose}>
+            <div className="bg-[#0f172a] border border-gray-800 rounded-t-2xl sm:rounded-2xl w-full max-w-md max-h-[min(90dvh,calc(100dvh-env(safe-area-inset-top)-env(safe-area-inset-bottom)))] overflow-y-auto mx-auto p-5 sm:p-10 shadow-2xl shadow-purple-500/10 relative sm:my-auto" onClick={(e) => e.stopPropagation()}>
+                <div className="flex items-center justify-between mb-6">
+                    <h2 className="text-xl sm:text-2xl font-bold text-white tracking-tight">{isLogin ? 'Login to ShopZone' : 'Create Account'}</h2>
+                    <button className="w-8 h-8 flex items-center justify-center rounded-full bg-white/5 text-gray-400 hover:text-white hover:bg-white/10 border-none cursor-pointer transition-all duration-200" onClick={onClose}>✕</button>
                 </div>
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmit} className="space-y-4">
                     {!isLogin && (
                         <>
-                            <div className="form-group">
-                                <label className="form-label">First Name</label>
-                                <input
-                                    type="text"
-                                    name="firstName"
-                                    className={`form-input ${errors.firstName ? 'error' : ''}`}
-                                    value={formData.firstName}
-                                    onChange={handleChange}
-                                    required
-                                />
-                                {errors.firstName && <span className="error-message">{errors.firstName}</span>}
+                            <div>
+                                <label className="block text-gray-400 text-xs uppercase tracking-wider font-semibold mb-1.5">First Name</label>
+                                <input type="text" name="firstName" className={inputClass('firstName')} value={formData.firstName} onChange={handleChange} required />
+                                {errors.firstName && <span className="text-red-400 text-xs mt-1 block">{errors.firstName}</span>}
                             </div>
-                            <div className="form-group">
-                                <label className="form-label">Last Name</label>
-                                <input
-                                    type="text"
-                                    name="lastName"
-                                    className={`form-input ${errors.lastName ? 'error' : ''}`}
-                                    value={formData.lastName}
-                                    onChange={handleChange}
-                                    required
-                                />
-                                {errors.lastName && <span className="error-message">{errors.lastName}</span>}
+                            <div>
+                                <label className="block text-gray-400 text-xs uppercase tracking-wider font-semibold mb-1.5">Last Name</label>
+                                <input type="text" name="lastName" className={inputClass('lastName')} value={formData.lastName} onChange={handleChange} required />
+                                {errors.lastName && <span className="text-red-400 text-xs mt-1 block">{errors.lastName}</span>}
                             </div>
                         </>
                     )}
-                    <div className="form-group">
-                        <label className="form-label">Email</label>
-                        <input
-                            type="email"
-                            name="email"
-                            className={`form-input ${errors.email ? 'error' : ''}`}
-                            value={formData.email}
-                            onChange={handleChange}
-                            required
-                        />
-                        {errors.email && <span className="error-message">{errors.email}</span>}
+                    <div>
+                        <label className="block text-gray-400 text-xs uppercase tracking-wider font-semibold mb-1.5">Email</label>
+                        <input type="email" name="email" className={inputClass('email')} value={formData.email} onChange={handleChange} required />
+                        {errors.email && <span className="text-red-400 text-xs mt-1 block">{errors.email}</span>}
                     </div>
-                    <div className="form-group">
-                        <label className="form-label">Password</label>
-                        <input
-                            type="password"
-                            name="password"
-                            className={`form-input ${errors.password ? 'error' : ''}`}
-                            value={formData.password}
-                            onChange={handleChange}
-                            required
-                        />
-                        {errors.password && <span className="error-message">{errors.password}</span>}
+                    <div>
+                        <label className="block text-gray-400 text-xs uppercase tracking-wider font-semibold mb-1.5">Password</label>
+                        <input type="password" name="password" className={inputClass('password')} value={formData.password} onChange={handleChange} required />
+                        {errors.password && <span className="text-red-400 text-xs mt-1 block">{errors.password}</span>}
                     </div>
                     {!isLogin && (
-                        <div className="form-group">
-                            <label className="form-label">Confirm Password</label>
-                            <input
-                                type="password"
-                                name="confirmPassword"
-                                className={`form-input ${errors.confirmPassword ? 'error' : ''}`}
-                                value={formData.confirmPassword}
-                                onChange={handleChange}
-                                required
-                            />
-                            {errors.confirmPassword && <span className="error-message">{errors.confirmPassword}</span>}
+                        <div>
+                            <label className="block text-gray-400 text-xs uppercase tracking-wider font-semibold mb-1.5">Confirm Password</label>
+                            <input type="password" name="confirmPassword" className={inputClass('confirmPassword')} value={formData.confirmPassword} onChange={handleChange} required />
+                            {errors.confirmPassword && <span className="text-red-400 text-xs mt-1 block">{errors.confirmPassword}</span>}
                         </div>
                     )}
-                    <button type="submit" className="btn btn-primary" style={{width: '100%'}}>
+                    <button type="submit" className="w-full py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold rounded-xl text-sm sm:text-base hover:opacity-90 transition-all duration-200 border-none cursor-pointer active:scale-[0.98]">
                         {isLogin ? 'Login' : 'Create Account'}
                     </button>
                 </form>
-                <p style={{marginTop: '1rem', fontSize: '0.875rem', color: 'var(--text-light)', textAlign: 'center'}}>
+                <p className="mt-4 text-sm text-gray-400 text-center">
                     {isLogin ? "Don't have an account? " : "Already have an account? "}
-                    <button 
-                        type="button" 
-                        onClick={toggleMode}
-                        style={{
-                            background: 'none',
-                            border: 'none',
-                            color: 'var(--primary)',
-                            cursor: 'pointer',
-                            textDecoration: 'underline',
-                            fontSize: '0.875rem',
-                            padding: 0
-                        }}
-                    >
+                    <button type="button" onClick={toggleMode} className="bg-transparent border-none text-purple-400 cursor-pointer underline text-sm p-0 font-medium hover:text-purple-300 transition-colors duration-200">
                         {isLogin ? 'Sign Up' : 'Login'}
                     </button>
                 </p>

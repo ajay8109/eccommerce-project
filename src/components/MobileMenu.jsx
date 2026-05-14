@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import ThemeToggle from './ThemeToggle';
 
 const MobileMenu = ({ isOpen, onClose, user, cartCount, onLogout, onCartClick, onLoginClick, onCategoryChange }) => {
@@ -40,6 +40,11 @@ const MobileMenu = ({ isOpen, onClose, user, cartCount, onLogout, onCartClick, o
         return () => document.removeEventListener('keydown', handleEscape);
     }, [isOpen, onClose]);
 
+    const handleNavClick = (path) => {
+        navigate(path);
+        onClose();
+    };
+
     const scrollToSection = (sectionId) => {
         const element = document.getElementById(sectionId);
         if (element) {
@@ -62,130 +67,96 @@ const MobileMenu = ({ isOpen, onClose, user, cartCount, onLogout, onCartClick, o
         scrollToSection('products');
     };
 
+    const MenuItem = ({ icon, text, badge, onClick }) => (
+        <div 
+            className="flex items-center gap-3 px-4 py-3.5 rounded-xl cursor-pointer hover:bg-white/5 transition-all duration-200 active:scale-[0.98] min-h-[44px]"
+            onClick={onClick}
+        >
+            <span className="text-lg w-6 text-center opacity-80">{icon}</span>
+            <span className="flex-1 text-white text-sm font-medium">{text}</span>
+            {badge && (
+                <span className="bg-gradient-to-r from-pink-500 to-rose-500 text-white text-[0.65rem] font-bold px-2 py-0.5 rounded-full min-w-[24px] text-center shadow-sm">
+                    {badge}
+                </span>
+            )}
+        </div>
+    );
+
+    const SectionTitle = ({ title }) => (
+        <div className="text-[0.65rem] font-bold text-gray-500 uppercase tracking-[0.15em] px-4 pt-4 pb-1">{title}</div>
+    );
+
     return (
         <>
-            <div className={`mobile-menu-overlay ${isOpen ? 'open' : ''}`} onClick={onClose} />
-            <div className={`mobile-menu ${isOpen ? 'open' : ''}`} ref={menuRef}>
-                <div className="mobile-menu-header">
-                    <div className="logo">
-                        <span className="logo-icon">🛍️</span>
+            {/* Overlay */}
+            <div 
+                className={`fixed inset-0 bg-black/60 backdrop-blur-sm z-[998] transition-opacity duration-300 lg:hidden ${
+                    isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+                }`}
+                onClick={onClose} 
+            />
+            
+            {/* Slide-in Drawer */}
+            <div 
+                className={`fixed top-0 right-0 bottom-0 w-[280px] sm:w-[320px] bg-[#0f172a] z-[999] transform transition-transform duration-300 ease-in-out overflow-y-auto lg:hidden ${
+                    isOpen ? 'translate-x-0' : 'translate-x-full'
+                }`} 
+                ref={menuRef}
+            >
+                {/* Header */}
+                <div className="flex items-center justify-between px-5 py-4 border-b border-gray-800">
+                    <div className="flex items-center gap-2 text-xl font-extrabold text-cyan-400">
+                        <span className="text-2xl">🛍️</span>
                         ShopZone
                     </div>
-                    <div style={{display: 'flex', alignItems: 'center', gap: '0.5rem'}}>
+                    <div className="flex items-center gap-2">
                         <ThemeToggle className="compact" />
-                        <button className="mobile-menu-close" onClick={onClose}>
+                        <button 
+                            className="w-9 h-9 flex items-center justify-center rounded-full bg-white/5 text-gray-400 hover:text-white hover:bg-white/10 border-none cursor-pointer text-lg transition-all duration-200"
+                            onClick={onClose}
+                        >
                             ✕
                         </button>
                     </div>
                 </div>
 
-                <div className="mobile-menu-content">
-                    <div className="mobile-menu-section">
-                        <div className="mobile-menu-title">Navigation</div>
-                        <div className="mobile-menu-item" onClick={() => scrollToSection('home')}>
-                            <span className="mobile-menu-item-icon">🏠</span>
-                            <span className="mobile-menu-item-text">Home</span>
-                        </div>
-                        <div className="mobile-menu-item" onClick={() => handleCategoryClick('All')}>
-                            <span className="mobile-menu-item-icon">🛍️</span>
-                            <span className="mobile-menu-item-text">All Products</span>
-                        </div>
-                        <div className="mobile-menu-item" onClick={() => scrollToSection('about')}>
-                            <span className="mobile-menu-item-icon">ℹ️</span>
-                            <span className="mobile-menu-item-text">About</span>
-                        </div>
-                    </div>
+                {/* Content */}
+                <div className="px-2 py-2 pb-[max(0.75rem,env(safe-area-inset-bottom,0px))]">
+                    <SectionTitle title="Navigation" />
+                    <MenuItem icon="🏠" text="Home" onClick={() => handleNavClick('/')} />
+                    <MenuItem icon="🛍️" text="All Products" onClick={() => handleNavClick('/category')} />
+                    <MenuItem icon="ℹ️" text="About" onClick={() => handleNavClick('/about')} />
+                    <MenuItem icon="📞" text="Contact" onClick={() => handleNavClick('/contact')} />
 
-                    <div className="mobile-menu-section">
-                        <div className="mobile-menu-title">Categories</div>
-                        <div className="mobile-menu-item" onClick={() => handleCategoryClick('Electronics')}>
-                            <span className="mobile-menu-item-icon">📱</span>
-                            <span className="mobile-menu-item-text">Electronics</span>
-                        </div>
-                        <div className="mobile-menu-item" onClick={() => handleCategoryClick('Fashion')}>
-                            <span className="mobile-menu-item-icon">👔</span>
-                            <span className="mobile-menu-item-text">Fashion</span>
-                        </div>
-                        <div className="mobile-menu-item" onClick={() => handleCategoryClick('Home')}>
-                            <span className="mobile-menu-item-icon">🏠</span>
-                            <span className="mobile-menu-item-text">Home & Living</span>
-                        </div>
-                        <div className="mobile-menu-item" onClick={() => handleCategoryClick('Sports')}>
-                            <span className="mobile-menu-item-icon">⚽</span>
-                            <span className="mobile-menu-item-text">Sports</span>
-                        </div>
-                    </div>
+                    <SectionTitle title="Categories" />
+                    <MenuItem icon="📱" text="Electronics" onClick={() => handleCategoryClick('Electronics')} />
+                    <MenuItem icon="👔" text="Fashion" onClick={() => handleCategoryClick('Fashion')} />
+                    <MenuItem icon="🏠" text="Home & Living" onClick={() => handleCategoryClick('Home')} />
+                    <MenuItem icon="⚽" text="Sports" onClick={() => handleCategoryClick('Sports')} />
 
-                    <div className="mobile-menu-section">
-                        <div className="mobile-menu-title">Shopping</div>
-                        <div className="mobile-menu-item" onClick={onCartClick}>
-                            <span className="mobile-menu-item-icon">🛒</span>
-                            <span className="mobile-menu-item-text">Cart</span>
-                            {cartCount > 0 && (
-                                <span className="mobile-menu-item-badge">{cartCount}</span>
-                            )}
-                        </div>
-                        <div className="mobile-menu-item" onClick={() => console.log('Wishlist clicked')}>
-                            <span className="mobile-menu-item-icon">❤️</span>
-                            <span className="mobile-menu-item-text">Wishlist</span>
-                            <span className="mobile-menu-item-badge">3</span>
-                        </div>
-                        <div className="mobile-menu-item" onClick={() => console.log('Deals clicked')}>
-                            <span className="mobile-menu-item-icon">🏷️</span>
-                            <span className="mobile-menu-item-text">Deals</span>
-                            <span className="mobile-menu-item-badge">NEW</span>
-                        </div>
-                    </div>
+                    <SectionTitle title="Shopping" />
+                    <MenuItem icon="🛒" text="Cart" badge={cartCount > 0 ? cartCount : null} onClick={onCartClick} />
+                    <MenuItem icon="❤️" text="Wishlist" badge="3" onClick={() => handleNavClick('/wishlist')} />
+                    <MenuItem icon="🏷️" text="Deals" badge="NEW" onClick={() => handleNavClick('/sale')} />
 
-                    <div className="mobile-menu-section">
-                        <div className="mobile-menu-title">Account</div>
-                        {user ? (
-                            <>
-                                <div className="mobile-menu-item" onClick={() => console.log('Profile clicked')}>
-                                    <span className="mobile-menu-item-icon">👤</span>
-                                    <span className="mobile-menu-item-text">My Profile</span>
-                                </div>
-                                <div className="mobile-menu-item" onClick={() => console.log('Orders clicked')}>
-                                    <span className="mobile-menu-item-icon">📦</span>
-                                    <span className="mobile-menu-item-text">Order History</span>
-                                </div>
-                                <div className="mobile-menu-item" onClick={() => console.log('Settings clicked')}>
-                                    <span className="mobile-menu-item-icon">⚙️</span>
-                                    <span className="mobile-menu-item-text">Settings</span>
-                                </div>
-                                <div className="mobile-menu-item" onClick={onLogout}>
-                                    <span className="mobile-menu-item-icon">🚪</span>
-                                    <span className="mobile-menu-item-text">Logout</span>
-                                </div>
-                            </>
-                        ) : (
-                            <>
-                                <div className="mobile-menu-item" onClick={onLoginClick}>
-                                    <span className="mobile-menu-item-icon">🔐</span>
-                                    <span className="mobile-menu-item-text">Login</span>
-                                </div>
-                                <div className="mobile-menu-item" onClick={() => console.log('Register clicked')}>
-                                    <span className="mobile-menu-item-icon">📝</span>
-                                    <span className="mobile-menu-item-text">Register</span>
-                                </div>
-                            </>
-                        )}
-                    </div>
+                    <SectionTitle title="Account" />
+                    {user ? (
+                        <>
+                            <MenuItem icon="👤" text="My Profile" onClick={() => console.log('Profile clicked')} />
+                            <MenuItem icon="📦" text="Order History" onClick={() => console.log('Orders clicked')} />
+                            <MenuItem icon="⚙️" text="Settings" onClick={() => console.log('Settings clicked')} />
+                            <MenuItem icon="🚪" text="Logout" onClick={onLogout} />
+                        </>
+                    ) : (
+                        <>
+                            <MenuItem icon="🔐" text="Login" onClick={onLoginClick} />
+                            <MenuItem icon="📝" text="Register" onClick={() => console.log('Register clicked')} />
+                        </>
+                    )}
 
-                    <div className="mobile-menu-section">
-                        <div className="mobile-menu-title">Support</div>
-                        <div className="mobile-menu-item" onClick={() => console.log('Help clicked')}>
-                            <span className="mobile-menu-item-icon">❓</span>
-                            <span className="mobile-menu-item-text">Help & Support</span>
-                        </div>
-                        <div className="mobile-menu-item" onClick={() => {
-                            navigate('/contact');
-                            onClose();
-                        }}>
-                            <span className="mobile-menu-item-icon">📞</span>
-                            <span className="mobile-menu-item-text">Contact Us</span>
-                        </div>
-                    </div>
+                    <SectionTitle title="Support" />
+                    <MenuItem icon="❓" text="Help & Support" onClick={() => console.log('Help clicked')} />
+                    <MenuItem icon="📞" text="Contact Us" onClick={() => handleNavClick('/contact')} />
                 </div>
             </div>
         </>
