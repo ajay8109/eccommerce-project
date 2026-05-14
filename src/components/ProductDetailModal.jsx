@@ -54,9 +54,9 @@ const ProductDetailModal = ({ product, isOpen, onClose, onAddToCart }) => {
                         
                         <div className="text-gray-400 text-xs"><strong className="text-gray-300">Brand:</strong> {product.brand}</div>
                         
-                        <div className="flex gap-2 pt-2">
-                            <button className={`flex-1 py-2.5 rounded-xl font-bold text-sm border-none cursor-pointer transition-all duration-200 active:scale-[0.98] ${product.stock <= 0 ? 'bg-gray-600 text-gray-400 cursor-not-allowed' : 'bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:opacity-90'}`} onClick={handleAddToCart} disabled={product.stock <= 0}>{product.stock <= 0 ? 'Out of Stock' : 'Add to Cart'}</button>
-                            <button className="px-5 py-2.5 rounded-xl font-bold text-sm bg-transparent border-2 border-gray-700 text-white hover:border-cyan-400 hover:text-cyan-400 cursor-pointer transition-all duration-200" onClick={onClose}>Close</button>
+                        <div className="flex flex-col sm:flex-row gap-2 pt-2">
+                            <button type="button" className={`flex-1 min-h-11 py-2.5 rounded-xl font-bold text-sm border-none cursor-pointer transition-all duration-200 active:scale-[0.98] touch-manipulation ${product.stock <= 0 ? 'bg-gray-600 text-gray-400 cursor-not-allowed' : 'bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:opacity-90'}`} onClick={handleAddToCart} disabled={product.stock <= 0}>{product.stock <= 0 ? 'Out of Stock' : 'Add to Cart'}</button>
+                            <button type="button" className="min-h-11 py-2.5 rounded-xl font-bold text-sm bg-transparent border-2 border-gray-700 text-white hover:border-cyan-400 hover:text-cyan-400 cursor-pointer transition-all duration-200 touch-manipulation sm:px-5" onClick={onClose}>Close</button>
                         </div>
                         
                         <div className="border-t border-gray-800 pt-3 mt-3 grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-xs text-gray-400">

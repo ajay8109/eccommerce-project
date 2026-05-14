@@ -74,9 +74,9 @@ const WishlistPage = () => {
                         <button className="px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold rounded-xl text-sm hover:opacity-90 transition-all duration-200 border-none cursor-pointer" onClick={() => navigate('/category')}>Continue Shopping</button>
                     </div>
                 ) : (
-                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 sm:gap-4">
+                    <div className="grid grid-cols-1 min-[360px]:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 min-[360px]:gap-2.5 sm:gap-4">
                         {wishlist.map(product => (
-                            <div key={product.id} className="bg-[#1e2235] rounded-xl overflow-hidden shadow-lg flex flex-col transition-all duration-200 hover:scale-105 hover:shadow-xl hover:shadow-purple-500/20 group">
+                            <div key={product.id} className="min-w-0 bg-[#1e2235] rounded-xl overflow-hidden shadow-lg flex flex-col transition-all duration-200 sm:hover:scale-[1.02] hover:shadow-xl hover:shadow-purple-500/20 group">
                                 <div className="relative h-48 sm:h-52 bg-[#161929] overflow-hidden">
                                     <img src={product.thumbnail} alt={product.title} className="w-full h-full object-contain p-2 transition-transform duration-300 group-hover:scale-110" />
                                     <button className="absolute top-3 right-3 w-8 h-8 flex items-center justify-center rounded-full bg-red-500/20 text-white border-none cursor-pointer text-sm z-10 hover:bg-red-500/40 transition-all duration-200" onClick={() => removeFromWishlist(product.id)} title="Remove from wishlist">×</button>

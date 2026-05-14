@@ -250,12 +250,12 @@ const CategoryPage = ({ onAddToCart }) => {
 
                     {/* Product grid */}
                     <main className="flex-1 min-w-0">
-                        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-2 sm:gap-4">
+                        <div className="grid grid-cols-1 min-[360px]:grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-2 min-[360px]:gap-2.5 sm:gap-4">
                             {paginatedProducts.map(product => {
                                 const dp = product.discountPercentage || 0;
                                 const discountedPrice = product.price * (1 - dp / 100);
                                 return (
-                                    <div key={product.id} className="bg-[#1e2235] rounded-xl overflow-hidden shadow-lg flex flex-col transition-all duration-200 hover:scale-105 hover:shadow-xl hover:shadow-purple-500/20 group">
+                                    <div key={product.id} className="min-w-0 bg-[#1e2235] rounded-xl overflow-hidden shadow-lg flex flex-col transition-all duration-200 sm:hover:scale-[1.02] hover:shadow-xl hover:shadow-purple-500/20 group">
                                         <div className="relative h-48 sm:h-52 bg-[#161929] overflow-hidden">
                                             <img src={product.thumbnail} alt={product.title} className="w-full h-full object-contain p-2 transition-transform duration-300 group-hover:scale-110" />
                                             {dp > 0 && <span className="absolute top-3 left-3 bg-red-500 text-white text-xs font-bold rounded-full px-2 py-1">-{Math.round(dp)}%</span>}

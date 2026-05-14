@@ -39,7 +39,7 @@ const ProductCard = ({ product, onAddToCart }) => {
         const hasHalfStar = rating % 1 !== 0;
         
         return (
-            <div className="flex items-center gap-0.5">
+            <div className="flex flex-wrap items-center gap-x-0.5 gap-y-0.5">
                 {[...Array(fullStars)].map((_, i) => (
                     <span key={i} className="text-yellow-400 text-xs">★</span>
                 ))}
@@ -47,7 +47,7 @@ const ProductCard = ({ product, onAddToCart }) => {
                 {[...Array(5 - Math.ceil(rating))].map((_, i) => (
                     <span key={i} className="text-gray-600 text-xs">★</span>
                 ))}
-                <span className="text-gray-400 text-xs ml-1">({product.reviews?.length || 0})</span>
+                <span className="text-gray-400 text-[0.65rem] sm:text-xs ml-0.5 shrink-0">({product.reviews?.length || 0})</span>
             </div>
         );
     };
@@ -58,9 +58,9 @@ const ProductCard = ({ product, onAddToCart }) => {
         : null;
 
     return (
-        <div className="bg-[#1e2235] rounded-lg sm:rounded-xl overflow-hidden shadow-lg flex flex-col transition-all duration-200 ease-in-out hover:shadow-xl hover:shadow-purple-500/20 sm:hover:scale-[1.02] group">
+            <div className="min-w-0 bg-[#1e2235] rounded-lg sm:rounded-xl overflow-hidden shadow-lg flex flex-col transition-all duration-200 ease-in-out hover:shadow-xl hover:shadow-purple-500/20 sm:hover:scale-[1.02] group">
             {/* Image container */}
-            <div className="relative h-40 min-[400px]:h-44 sm:h-52 bg-[#161929] overflow-hidden">
+            <div className="relative h-36 min-[360px]:h-40 min-[400px]:h-44 sm:h-52 bg-[#161929] overflow-hidden">
                 <img 
                     src={product.thumbnail} 
                     alt={product.title} 
@@ -69,7 +69,8 @@ const ProductCard = ({ product, onAddToCart }) => {
                 
                 {/* Wishlist heart icon */}
                 <button 
-                    className={`absolute top-3 right-3 w-8 h-8 flex items-center justify-center rounded-full bg-black/40 backdrop-blur-sm border-none cursor-pointer text-sm transition-all duration-200 hover:scale-110 z-10 ${
+                    type="button"
+                    className={`absolute top-2 right-2 min-[400px]:top-3 min-[400px]:right-3 min-h-9 min-w-9 flex items-center justify-center rounded-full bg-black/40 backdrop-blur-sm border-none cursor-pointer text-sm transition-all duration-200 hover:scale-110 z-10 touch-manipulation ${
                         isWishlisted ? 'bg-pink-500/30' : ''
                     }`}
                     onClick={handleWishlist}
@@ -101,7 +102,7 @@ const ProductCard = ({ product, onAddToCart }) => {
                 </span>
                 
                 {/* Product name */}
-                <h3 className="text-sm sm:text-base font-bold text-white line-clamp-2 leading-snug">
+                <h3 className="text-xs min-[380px]:text-sm sm:text-base font-bold text-white line-clamp-2 leading-snug break-words">
                     {product.title}
                 </h3>
                 
@@ -123,7 +124,7 @@ const ProductCard = ({ product, onAddToCart }) => {
                 
                 {/* Add to Cart button - mt-auto pushes to bottom */}
                 <button 
-                    className={`w-full py-2 rounded-lg font-semibold text-sm transition-all duration-200 mt-auto cursor-pointer border-none ${
+                    className={`w-full min-h-11 py-2.5 rounded-lg font-semibold text-xs min-[380px]:text-sm transition-all duration-200 mt-auto cursor-pointer border-none touch-manipulation ${
                         product.stock <= 0 
                             ? 'bg-gray-600 text-gray-400 cursor-not-allowed' 
                             : 'bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:opacity-90 hover:shadow-lg hover:shadow-purple-500/30 active:scale-[0.98]'

@@ -1,10 +1,21 @@
-import React, { useEffect, useRef } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import React, { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import ThemeToggle from './ThemeToggle';
 
-const MobileMenu = ({ isOpen, onClose, user, cartCount, onLogout, onCartClick, onLoginClick, onCategoryChange }) => {
+const MobileMenu = ({ isOpen, onClose, user, cartCount = 0, onLogout, onCartClick, onLoginClick, onCategoryChange }) => {
     const menuRef = useRef(null);
     const navigate = useNavigate();
+    const [wishlistCount, setWishlistCount] = useState(0);
+
+    useEffect(() => {
+        if (!isOpen) return;
+        try {
+            const raw = localStorage.getItem('wishlist');
+            setWishlistCount(raw ? JSON.parse(raw).length : 0);
+        } catch {
+            setWishlistCount(0);
+        }
+    }, [isOpen]);
 
     // Close menu when clicking outside
     useEffect(() => {
@@ -98,22 +109,24 @@ const MobileMenu = ({ isOpen, onClose, user, cartCount, onLogout, onCartClick, o
             
             {/* Slide-in Drawer */}
             <div 
-                className={`fixed top-0 right-0 bottom-0 w-[280px] sm:w-[320px] bg-[#0f172a] z-[999] transform transition-transform duration-300 ease-in-out overflow-y-auto lg:hidden ${
+                className={`fixed top-0 right-0 bottom-0 w-[min(100vw,20rem)] sm:w-[320px] max-w-full bg-[#0f172a] z-[999] transform transition-transform duration-300 ease-in-out overflow-y-auto overscroll-contain lg:hidden pt-[env(safe-area-inset-top,0px)] ${
                     isOpen ? 'translate-x-0' : 'translate-x-full'
                 }`} 
                 ref={menuRef}
             >
                 {/* Header */}
-                <div className="flex items-center justify-between px-5 py-4 border-b border-gray-800">
-                    <div className="flex items-center gap-2 text-xl font-extrabold text-cyan-400">
-                        <span className="text-2xl">🛍️</span>
-                        ShopZone
+                <div className="flex items-center justify-between gap-2 px-4 sm:px-5 py-3 sm:py-4 border-b border-gray-800">
+                    <div className="flex items-center gap-2 text-lg sm:text-xl font-extrabold text-cyan-400 min-w-0">
+                        <span className="text-xl sm:text-2xl shrink-0">🛍️</span>
+                        <span className="truncate">ShopZone</span>
                     </div>
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-1 shrink-0">
                         <ThemeToggle className="compact" />
                         <button 
-                            className="w-9 h-9 flex items-center justify-center rounded-full bg-white/5 text-gray-400 hover:text-white hover:bg-white/10 border-none cursor-pointer text-lg transition-all duration-200"
+                            className="min-h-11 min-w-11 flex items-center justify-center rounded-full bg-white/5 text-gray-400 hover:text-white hover:bg-white/10 border-none cursor-pointer text-lg transition-all duration-200 touch-manipulation"
                             onClick={onClose}
+                            type="button"
+                            aria-label="Close menu"
                         >
                             ✕
                         </button>
@@ -136,7 +149,7 @@ const MobileMenu = ({ isOpen, onClose, user, cartCount, onLogout, onCartClick, o
 
                     <SectionTitle title="Shopping" />
                     <MenuItem icon="🛒" text="Cart" badge={cartCount > 0 ? cartCount : null} onClick={onCartClick} />
-                    <MenuItem icon="❤️" text="Wishlist" badge="3" onClick={() => handleNavClick('/wishlist')} />
+                    <MenuItem icon="❤️" text="Wishlist" badge={wishlistCount > 0 ? wishlistCount : null} onClick={() => handleNavClick('/wishlist')} />
                     <MenuItem icon="🏷️" text="Deals" badge="NEW" onClick={() => handleNavClick('/sale')} />
 
                     <SectionTitle title="Account" />
@@ -145,7 +158,7 @@ const MobileMenu = ({ isOpen, onClose, user, cartCount, onLogout, onCartClick, o
                             <MenuItem icon="👤" text="My Profile" onClick={() => console.log('Profile clicked')} />
                             <MenuItem icon="📦" text="Order History" onClick={() => console.log('Orders clicked')} />
                             <MenuItem icon="⚙️" text="Settings" onClick={() => console.log('Settings clicked')} />
-                            <MenuItem icon="🚪" text="Logout" onClick={onLogout} />
+                            <MenuItem icon="🚪" text="Logout" onClick={() => { if (onLogout) onLogout(); }} />
                         </>
                     ) : (
                         <>

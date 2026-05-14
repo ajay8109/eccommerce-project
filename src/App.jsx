@@ -206,7 +206,7 @@ const App = () => {
                         <div className="min-h-screen bg-[#0f172a] text-white w-full overflow-x-hidden">
                             <Navbar 
                                 user={user}
-                                cartCount={cart.length}
+                                cartCount={cartCount}
                                 onLogout={handleLogout}
                                 onCartClick={handleCartClick}
                                 onLoginClick={handleLoginClick}
@@ -222,8 +222,21 @@ const App = () => {
                             <MobileMenu 
                                 isOpen={isMobileMenuOpen}
                                 onClose={() => setIsMobileMenuOpen(false)}
+                                user={user}
+                                cartCount={cartCount}
+                                onCartClick={() => {
+                                    setIsCartOpen(true);
+                                    setIsMobileMenuOpen(false);
+                                }}
+                                onLogout={() => {
+                                    handleLogout();
+                                    setIsMobileMenuOpen(false);
+                                }}
+                                onLoginClick={() => {
+                                    setIsLoginModalOpen(true);
+                                    setIsMobileMenuOpen(false);
+                                }}
                                 onCategoryChange={handleCategoryChange}
-                                onLoginClick={handleLoginClick}
                             />
                             
                             <Routes>

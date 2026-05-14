@@ -24,7 +24,7 @@ const ProductGrid = ({ products, selectedCategory, selectedSubcategory, priceRan
     }, [products, sortBy]);
 
     return (
-        <div className="w-full px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-12 bg-gradient-to-b from-[#0a0f1b] to-[#141824]">
+        <div className="w-full px-3 sm:px-6 lg:px-8 py-5 sm:py-8 lg:py-12 bg-gradient-to-b from-[#0a0f1b] to-[#141824]">
             {/* Header */}
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 border-b-2 border-gray-800 mb-6">
                 <h2 className="text-xl min-[400px]:text-2xl sm:text-4xl font-bold text-white uppercase tracking-tight break-words">
@@ -56,7 +56,7 @@ const ProductGrid = ({ products, selectedCategory, selectedSubcategory, priceRan
                     <p className="text-gray-400 text-sm">Try adjusting your filters to see more results</p>
                 </div>
             ) : (
-                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 min-[400px]:gap-3 sm:gap-4">
+                <div className="grid grid-cols-1 min-[360px]:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 min-[360px]:gap-2.5 min-[400px]:gap-3 sm:gap-4">
                     {sortedProducts.map(product => (
                         <ProductCard 
                             key={product.id} 

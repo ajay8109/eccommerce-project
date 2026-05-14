@@ -55,7 +55,7 @@ const Navbar = ({ user, cartCount, onLogout, onCartClick, onLoginClick, onCatego
                     </ul>
                     
                     {/* Right actions */}
-                    <div className="flex items-center gap-2 sm:gap-3 lg:gap-4 shrink-0">
+                    <div className="flex items-center gap-1 min-[380px]:gap-2 sm:gap-3 lg:gap-4 shrink-0 min-w-0">
                         {/* Search - Desktop: full bar, Mobile: icon that expands */}
                         <div className="relative hidden lg:flex items-center bg-white/5 rounded-full px-4 border border-gray-700 focus-within:border-cyan-400 focus-within:shadow-[0_0_20px_rgba(0,212,255,0.3)] transition-all duration-300 max-w-[300px]">
                             <input 
@@ -69,27 +69,30 @@ const Navbar = ({ user, cartCount, onLogout, onCartClick, onLoginClick, onCatego
                         </div>
 
                         {/* Mobile search icon + expandable input */}
-                        <div className="lg:hidden flex items-center">
+                        <div className="lg:hidden relative flex items-center shrink-0">
                             {isSearchExpanded ? (
-                                <div className="absolute left-0 right-0 top-full bg-[#0a0f1b] border-b border-gray-800 px-3 sm:px-4 py-3 z-50 shadow-lg">
-                                    <div className="flex items-center bg-white/5 rounded-full px-4 border border-gray-700">
+                                <div className="absolute left-1/2 -translate-x-1/2 min-[380px]:left-0 min-[380px]:translate-x-0 w-[calc(100vw-1.5rem)] max-w-md top-full mt-1 bg-[#0a0f1b] border border-gray-800 rounded-xl px-3 py-3 z-[60] shadow-xl">
+                                    <div className="flex items-center bg-white/5 rounded-full px-3 border border-gray-700">
                                         <input 
                                             type="text" 
                                             placeholder="Search products..." 
-                                            className="flex-1 py-2.5 px-2 border-none bg-transparent text-white text-sm outline-none placeholder:text-gray-500 font-sans"
+                                            className="flex-1 min-w-0 py-3 px-2 border-none bg-transparent text-white text-base outline-none placeholder:text-gray-500 font-sans"
                                             value={searchQuery}
                                             onChange={handleSearchChange}
                                             autoFocus
                                         />
                                         <button 
-                                            className="text-gray-400 hover:text-white bg-transparent border-none cursor-pointer text-lg p-1"
+                                            type="button"
+                                            className="min-h-11 min-w-11 shrink-0 flex items-center justify-center text-gray-400 hover:text-white bg-transparent border-none cursor-pointer text-lg touch-manipulation"
                                             onClick={() => setIsSearchExpanded(false)}
+                                            aria-label="Close search"
                                         >✕</button>
                                     </div>
                                 </div>
                             ) : null}
                             <button 
-                                className="p-2 text-white bg-transparent border-none cursor-pointer text-lg hover:text-cyan-400 transition-colors duration-200"
+                                type="button"
+                                className="min-h-11 min-w-11 flex items-center justify-center text-white bg-transparent border-none cursor-pointer text-lg hover:text-cyan-400 transition-colors duration-200 touch-manipulation"
                                 onClick={() => setIsSearchExpanded(!isSearchExpanded)}
                                 aria-label="Search"
                             >🔍</button>
@@ -98,12 +101,12 @@ const Navbar = ({ user, cartCount, onLogout, onCartClick, onLoginClick, onCatego
                         <ThemeToggle className="desktop-theme-toggle hidden sm:flex" />
                         
                         {/* SALE badge - always visible */}
-                        <Link to="/sale" className="flex items-center justify-center px-2.5 sm:px-3 py-1 bg-gradient-to-r from-orange-500 to-amber-400 rounded-full shadow-lg shadow-orange-500/30 no-underline animate-pulse hover:animate-none transition-all duration-200">
-                            <span className="text-[0.65rem] sm:text-xs font-bold text-white uppercase tracking-wider">SALE</span>
+                        <Link to="/sale" className="shrink-0 flex items-center justify-center px-2 min-[380px]:px-2.5 sm:px-3 py-1.5 min-h-9 bg-gradient-to-r from-orange-500 to-amber-400 rounded-full shadow-lg shadow-orange-500/30 no-underline animate-pulse hover:animate-none transition-all duration-200 touch-manipulation">
+                            <span className="text-[0.6rem] min-[380px]:text-[0.65rem] sm:text-xs font-bold text-white uppercase tracking-wider">SALE</span>
                         </Link>
                         
                         {/* Cart button - always visible */}
-                        <div className="relative cursor-pointer flex items-center gap-1.5 px-2 sm:px-3 py-2 rounded-xl hover:bg-purple-500/10 transition-all duration-200 active:scale-95" onClick={onCartClick}>
+                        <div className="relative cursor-pointer flex items-center justify-center gap-0 min-[380px]:gap-1.5 min-h-11 min-w-11 px-1.5 min-[380px]:px-2 sm:px-3 rounded-xl hover:bg-purple-500/10 transition-all duration-200 active:scale-95 touch-manipulation" onClick={onCartClick} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onCartClick(); } }}>
                             <span className="text-lg sm:text-xl">🛒</span>
                             <span className="hidden sm:inline text-white font-semibold text-sm">Cart</span>
                             {cartCount > 0 && (
@@ -128,7 +131,8 @@ const Navbar = ({ user, cartCount, onLogout, onCartClick, onLoginClick, onCatego
                         
                         {/* Mobile hamburger menu */}
                         <button 
-                            className="lg:hidden flex items-center justify-center w-10 h-10 text-2xl text-white bg-transparent border-none cursor-pointer hover:text-cyan-400 hover:bg-white/5 rounded-lg transition-all duration-200 active:scale-95" 
+                            type="button"
+                            className="lg:hidden flex items-center justify-center min-h-11 min-w-11 text-2xl text-white bg-transparent border-none cursor-pointer hover:text-cyan-400 hover:bg-white/5 rounded-lg transition-all duration-200 active:scale-95 touch-manipulation" 
                             onClick={onMobileMenuToggle}
                             aria-label="Menu"
                         >

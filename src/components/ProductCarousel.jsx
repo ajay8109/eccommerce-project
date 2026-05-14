@@ -64,8 +64,8 @@ const ProductCarousel = ({ onAddToCart }) => {
         <div className="relative w-full" ref={carouselRef} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
             <div className="relative overflow-hidden rounded-2xl bg-[#1e2235] shadow-2xl shadow-purple-500/10">
                 {/* Nav buttons */}
-                <button className="absolute left-2 sm:left-3 top-1/2 -translate-y-1/2 z-20 w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-black/50 backdrop-blur-sm text-white border-none cursor-pointer hover:bg-black/70 transition-all duration-200 text-lg sm:text-xl" onClick={handlePrev} aria-label="Previous product">‹</button>
-                <button className="absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 z-20 w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-black/50 backdrop-blur-sm text-white border-none cursor-pointer hover:bg-black/70 transition-all duration-200 text-lg sm:text-xl" onClick={handleNext} aria-label="Next product">›</button>
+                <button className="absolute left-2 sm:left-3 top-1/2 -translate-y-1/2 z-20 min-h-11 min-w-11 flex items-center justify-center rounded-full bg-black/50 backdrop-blur-sm text-white border-none cursor-pointer hover:bg-black/70 transition-all duration-200 text-lg sm:text-xl touch-manipulation" onClick={handlePrev} aria-label="Previous product" type="button">‹</button>
+                <button className="absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 z-20 min-h-11 min-w-11 flex items-center justify-center rounded-full bg-black/50 backdrop-blur-sm text-white border-none cursor-pointer hover:bg-black/70 transition-all duration-200 text-lg sm:text-xl touch-manipulation" onClick={handleNext} aria-label="Next product" type="button">›</button>
                 
                 {/* Track */}
                 <div className="relative h-[min(22rem,85svh)] min-h-[280px] sm:h-[400px] lg:h-[420px]">
@@ -94,11 +94,11 @@ const ProductCarousel = ({ onAddToCart }) => {
                                         {renderStars(product.rating)}
                                         {product.rating >= 4.5 && <span className="text-amber-400 text-xs font-medium">⭐ {product.rating}</span>}
                                     </div>
-                                    <div className="flex gap-2 pt-1">
-                                        <button onClick={() => handleAddToCart(product)} disabled={product.stock <= 0} className={`flex-1 py-2 rounded-lg text-sm font-semibold border-none cursor-pointer transition-all duration-200 active:scale-[0.98] ${product.stock <= 0 ? 'bg-gray-600 text-gray-400 cursor-not-allowed' : 'bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:opacity-90'}`}>
+                                    <div className="flex flex-col min-[400px]:flex-row gap-2 pt-1">
+                                        <button type="button" onClick={() => handleAddToCart(product)} disabled={product.stock <= 0} className={`flex-1 min-h-11 py-2.5 rounded-lg text-sm font-semibold border-none cursor-pointer transition-all duration-200 active:scale-[0.98] touch-manipulation ${product.stock <= 0 ? 'bg-gray-600 text-gray-400 cursor-not-allowed' : 'bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:opacity-90'}`}>
                                             {product.stock <= 0 ? 'Out of Stock' : 'Add to Cart'}
                                         </button>
-                                        <button onClick={() => handleViewDetails(product)} className="px-4 py-2 rounded-lg text-sm font-semibold bg-white/5 text-gray-300 border border-gray-700 hover:border-purple-500 hover:text-white cursor-pointer transition-all duration-200">
+                                        <button type="button" onClick={() => handleViewDetails(product)} className="min-h-11 min-[400px]:min-w-0 min-[400px]:px-4 py-2.5 rounded-lg text-sm font-semibold bg-white/5 text-gray-300 border border-gray-700 hover:border-purple-500 hover:text-white cursor-pointer transition-all duration-200 touch-manipulation w-full min-[400px]:w-auto shrink-0">
                                             Details
                                         </button>
                                     </div>
@@ -108,10 +108,18 @@ const ProductCarousel = ({ onAddToCart }) => {
                     ))}
                 </div>
                 
-                {/* Indicators */}
-                <div className="flex justify-center gap-1.5 pb-3">
+                {/* Indicators — larger tap targets on phones */}
+                <div className="flex justify-center gap-0.5 sm:gap-1.5 pb-3 pt-1">
                     {products.map((_, index) => (
-                        <button key={index} className={`w-2 h-2 rounded-full border-none cursor-pointer transition-all duration-300 ${index === currentIndex ? 'bg-purple-500 w-6' : 'bg-gray-600 hover:bg-gray-500'}`} onClick={() => handleDotClick(index)} aria-label={`Go to product ${index + 1}`} />
+                        <button
+                            key={index}
+                            type="button"
+                            className="min-h-11 min-w-[2.25rem] sm:min-w-8 flex items-center justify-center rounded-full border-none cursor-pointer touch-manipulation"
+                            onClick={() => handleDotClick(index)}
+                            aria-label={`Go to product ${index + 1}`}
+                        >
+                            <span className={`block rounded-full transition-all duration-300 ${index === currentIndex ? 'bg-purple-500 w-6 h-2' : 'w-2 h-2 bg-gray-600 hover:bg-gray-500'}`} />
+                        </button>
                     ))}
                 </div>
             </div>
