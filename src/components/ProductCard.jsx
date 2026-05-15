@@ -5,16 +5,6 @@ const ProductCard = ({ product, onAddToCart }) => {
 
     const handleAddToCart = () => {
         onAddToCart(product);
-        // Show toast notification
-        const toast = document.createElement('div');
-        toast.className = 'toast-notification';
-        const productName = product.title || product.name || 'Product';
-        toast.textContent = `Added ${productName} to cart ✓`;
-        document.body.appendChild(toast);
-        
-        setTimeout(() => {
-            toast.remove();
-        }, 3000);
     };
 
     const handleWishlist = (e) => {
@@ -58,9 +48,9 @@ const ProductCard = ({ product, onAddToCart }) => {
         : null;
 
     return (
-            <div className="min-w-0 bg-[#1e2235] rounded-lg sm:rounded-xl overflow-hidden shadow-lg flex flex-col transition-all duration-200 ease-in-out hover:shadow-xl hover:shadow-purple-500/20 sm:hover:scale-[1.02] group">
+            <div className="min-w-0 bg-white dark:bg-[#1e2235] rounded-lg sm:rounded-xl overflow-hidden shadow-lg dark:shadow-none border border-slate-100 dark:border-none flex flex-col transition-all duration-200 ease-in-out hover:shadow-xl hover:shadow-purple-500/10 dark:hover:shadow-purple-500/20 sm:hover:scale-[1.02] group">
             {/* Image container */}
-            <div className="relative h-36 min-[360px]:h-40 min-[400px]:h-44 sm:h-52 bg-[#161929] overflow-hidden">
+            <div className="relative h-36 min-[360px]:h-40 min-[400px]:h-44 sm:h-52 bg-slate-50 dark:bg-[#161929] overflow-hidden transition-colors duration-300">
                 <img 
                     src={product.thumbnail} 
                     alt={product.title} 
@@ -70,7 +60,7 @@ const ProductCard = ({ product, onAddToCart }) => {
                 {/* Wishlist heart icon */}
                 <button 
                     type="button"
-                    className={`absolute top-2 right-2 min-[400px]:top-3 min-[400px]:right-3 min-h-9 min-w-9 flex items-center justify-center rounded-full bg-black/40 backdrop-blur-sm border-none cursor-pointer text-sm transition-all duration-200 hover:scale-110 z-10 touch-manipulation ${
+                    className={`absolute top-2 right-2 min-[400px]:top-3 min-[400px]:right-3 min-h-9 min-w-9 flex items-center justify-center rounded-full bg-black/10 dark:bg-black/40 backdrop-blur-sm border-none cursor-pointer text-sm transition-all duration-200 hover:scale-110 z-10 touch-manipulation ${
                         isWishlisted ? 'bg-pink-500/30' : ''
                     }`}
                     onClick={handleWishlist}
@@ -87,22 +77,22 @@ const ProductCard = ({ product, onAddToCart }) => {
                 )}
 
                 {/* Quick view overlay */}
-                <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <button className="bg-white/20 backdrop-blur-md text-white px-4 py-2 rounded-lg text-sm font-semibold border border-white/30 hover:bg-white/30 transition-all duration-200 cursor-pointer">
+                <div className="absolute inset-0 bg-black/20 dark:bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <button className="bg-white/40 dark:bg-white/20 backdrop-blur-md text-white px-4 py-2 rounded-lg text-sm font-semibold border border-white/30 hover:bg-white/50 dark:hover:bg-white/30 transition-all duration-200 cursor-pointer">
                         Quick View
                     </button>
                 </div>
             </div>
 
             {/* Card content - flex-col flex-grow for sticky bottom button */}
-            <div className="p-2.5 sm:p-4 flex flex-col flex-grow gap-1.5 sm:gap-2">
+            <div className="p-2.5 sm:p-4 flex flex-col flex-grow gap-1.5 sm:gap-2 bg-white dark:bg-[#1e2235] transition-colors duration-300">
                 {/* Category tag */}
-                <span className="inline-flex self-start bg-purple-500/20 text-purple-300 text-xs font-semibold px-2.5 py-0.5 rounded-full">
+                <span className="inline-flex self-start bg-purple-100 dark:bg-purple-500/20 text-purple-600 dark:text-purple-300 text-xs font-semibold px-2.5 py-0.5 rounded-full">
                     {product.category}
                 </span>
                 
                 {/* Product name */}
-                <h3 className="text-xs min-[380px]:text-sm sm:text-base font-bold text-white line-clamp-2 leading-snug break-words">
+                <h3 className="text-xs min-[380px]:text-sm sm:text-base font-bold text-slate-900 dark:text-white line-clamp-2 leading-snug break-words">
                     {product.title}
                 </h3>
                 
@@ -111,10 +101,10 @@ const ProductCard = ({ product, onAddToCart }) => {
                 
                 {/* Price section */}
                 <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
-                    <span className="text-green-400 font-bold text-base sm:text-lg">₹{product.price.toFixed(2)}</span>
+                    <span className="text-emerald-600 dark:text-emerald-400 font-bold text-base sm:text-lg">₹{product.price.toFixed(2)}</span>
                     {originalPrice && (
                         <>
-                            <span className="text-gray-400 line-through text-sm">₹{originalPrice.toFixed(2)}</span>
+                            <span className="text-slate-400 dark:text-gray-500 line-through text-sm">₹{originalPrice.toFixed(2)}</span>
                             <span className="bg-orange-500 text-white text-xs rounded px-1 py-0.5 font-semibold">
                                 {Math.round(discountPercentage)}% off
                             </span>

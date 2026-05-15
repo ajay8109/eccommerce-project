@@ -101,11 +101,7 @@ const App = () => {
     };
 
     const handleAddToCart = (product) => {
-        if (!user) {
-            setIsLoginModalOpen(true);
-            showToast('Please login to add items to cart', 'error');
-            return;
-        }
+        const productName = product.title || product.name || 'Product';
 
         const existingItem = cart.find(item => item.id === product.id);
         
@@ -119,7 +115,7 @@ const App = () => {
             setCart([...cart, { ...product, quantity: 1 }]);
         }
         
-        showToast(`${product.name} added to cart!`);
+        showToast(`${productName} added to cart!`);
     };
 
     const updateQuantity = (productId, newQuantity) => {
@@ -142,6 +138,13 @@ const App = () => {
 
     const handleCheckout = () => {
         if (cart.length === 0) return;
+        
+        if (!user) {
+            setIsCartOpen(false);
+            setIsLoginModalOpen(true);
+            showToast('Please login to place your order', 'error');
+            return;
+        }
         
         showToast('Order placed successfully! 🎉');
         setCart([]);
@@ -203,7 +206,7 @@ const App = () => {
             <CartProvider>
                 <Router>
                     <AppContext.Provider value={{ user, cart, isCartOpen, isLoginModalOpen, isMobileMenuOpen, selectedCategory, selectedSubcategory, priceRange, searchQuery, filteredProducts, toast, handleLogin, handleLogout, handleAddToCart, updateQuantity, handleRemoveItem, handleCheckout, handleCategoryChange, handleSubcategoryChange, handlePriceRangeChange, handleSearchChange, handleCartClick, handleLoginClick, handleMobileMenuToggle }}>
-                        <div className="min-h-screen bg-[#0f172a] text-white w-full overflow-x-hidden">
+                        <div className="min-h-screen bg-slate-50 text-slate-900 dark:bg-[#0f172a] dark:text-white w-full transition-colors duration-300 overflow-x-hidden">
                             <Navbar 
                                 user={user}
                                 cartCount={cartCount}

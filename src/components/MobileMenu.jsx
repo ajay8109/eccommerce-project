@@ -80,11 +80,11 @@ const MobileMenu = ({ isOpen, onClose, user, cartCount = 0, onLogout, onCartClic
 
     const MenuItem = ({ icon, text, badge, onClick }) => (
         <div 
-            className="flex items-center gap-3 px-4 py-3.5 rounded-xl cursor-pointer hover:bg-white/5 transition-all duration-200 active:scale-[0.98] min-h-[44px]"
+            className="flex items-center gap-3 px-4 py-3.5 rounded-xl cursor-pointer hover:bg-slate-100 dark:hover:bg-white/5 transition-all duration-200 active:scale-[0.98] min-h-[44px]"
             onClick={onClick}
         >
             <span className="text-lg w-6 text-center opacity-80">{icon}</span>
-            <span className="flex-1 text-white text-sm font-medium">{text}</span>
+            <span className="flex-1 text-slate-900 dark:text-white text-sm font-medium">{text}</span>
             {badge && (
                 <span className="bg-gradient-to-r from-pink-500 to-rose-500 text-white text-[0.65rem] font-bold px-2 py-0.5 rounded-full min-w-[24px] text-center shadow-sm">
                     {badge}
@@ -94,7 +94,7 @@ const MobileMenu = ({ isOpen, onClose, user, cartCount = 0, onLogout, onCartClic
     );
 
     const SectionTitle = ({ title }) => (
-        <div className="text-[0.65rem] font-bold text-gray-500 uppercase tracking-[0.15em] px-4 pt-4 pb-1">{title}</div>
+        <div className="text-[0.65rem] font-bold text-slate-500 dark:text-gray-500 uppercase tracking-[0.15em] px-4 pt-4 pb-1">{title}</div>
     );
 
     return (
@@ -109,13 +109,13 @@ const MobileMenu = ({ isOpen, onClose, user, cartCount = 0, onLogout, onCartClic
             
             {/* Slide-in Drawer */}
             <div 
-                className={`fixed top-0 right-0 bottom-0 w-[min(100vw,20rem)] sm:w-[320px] max-w-full bg-[#0f172a] z-[999] transform transition-transform duration-300 ease-in-out overflow-y-auto overscroll-contain lg:hidden pt-[env(safe-area-inset-top,0px)] ${
+                className={`fixed top-0 right-0 bottom-0 w-[min(100vw,20rem)] sm:w-[320px] max-w-full bg-white dark:bg-[#0f172a] z-[999] transform transition-transform duration-300 ease-in-out overflow-y-auto overscroll-contain lg:hidden pt-[env(safe-area-inset-top,0px)] shadow-2xl dark:shadow-none ${
                     isOpen ? 'translate-x-0' : 'translate-x-full'
                 }`} 
                 ref={menuRef}
             >
                 {/* Header */}
-                <div className="flex items-center justify-between gap-2 px-4 sm:px-5 py-3 sm:py-4 border-b border-gray-800">
+                <div className="flex items-center justify-between gap-2 px-4 sm:px-5 py-3 sm:py-4 border-b border-slate-200 dark:border-gray-800">
                     <div className="flex items-center gap-2 text-lg sm:text-xl font-extrabold text-cyan-400 min-w-0">
                         <span className="text-xl sm:text-2xl shrink-0">🛍️</span>
                         <span className="truncate">ShopZone</span>
@@ -123,7 +123,7 @@ const MobileMenu = ({ isOpen, onClose, user, cartCount = 0, onLogout, onCartClic
                     <div className="flex items-center gap-1 shrink-0">
                         <ThemeToggle className="compact" />
                         <button 
-                            className="min-h-11 min-w-11 flex items-center justify-center rounded-full bg-white/5 text-gray-400 hover:text-white hover:bg-white/10 border-none cursor-pointer text-lg transition-all duration-200 touch-manipulation"
+                            className="min-h-11 min-w-11 flex items-center justify-center rounded-full bg-slate-100 dark:bg-white/5 text-slate-500 dark:text-gray-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-white/10 border-none cursor-pointer text-lg transition-all duration-200 touch-manipulation"
                             onClick={onClose}
                             type="button"
                             aria-label="Close menu"

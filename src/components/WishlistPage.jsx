@@ -43,25 +43,25 @@ const WishlistPage = () => {
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-[#0f172a] pt-[calc(4rem+env(safe-area-inset-top,0px))] lg:pt-[calc(4.375rem+env(safe-area-inset-top,0px))] flex items-center justify-center">
+            <div className="min-h-screen bg-slate-50 dark:bg-[#0f172a] pt-[calc(4rem+env(safe-area-inset-top,0px))] lg:pt-[calc(4.375rem+env(safe-area-inset-top,0px))] flex items-center justify-center transition-colors duration-300">
                 <div className="text-center">
                     <div className="w-10 h-10 border-4 border-purple-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-                    <p className="text-gray-400 text-sm">Loading your wishlist...</p>
+                    <p className="text-slate-500 dark:text-gray-400 text-sm">Loading your wishlist...</p>
                 </div>
             </div>
         );
     }
 
     return (
-        <div className="min-h-screen bg-[#0f172a] pt-[calc(4rem+env(safe-area-inset-top,0px))] lg:pt-[calc(4.375rem+env(safe-area-inset-top,0px))]">
+        <div className="min-h-screen bg-slate-50 dark:bg-[#0f172a] pt-[calc(4rem+env(safe-area-inset-top,0px))] lg:pt-[calc(4.375rem+env(safe-area-inset-top,0px))] transition-colors duration-300">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-12">
                 {/* Header */}
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6 sm:mb-8">
                     <div>
-                        <button className="text-purple-400 hover:text-purple-300 text-sm font-medium mb-2 bg-transparent border-none cursor-pointer p-0 transition-colors duration-200" onClick={() => navigate(-1)}>← Back to Shopping</button>
-                        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white tracking-tight">My Wishlist</h1>
+                        <button className="text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 text-sm font-medium mb-2 bg-transparent border-none cursor-pointer p-0 transition-colors duration-200" onClick={() => navigate(-1)}>← Back to Shopping</button>
+                        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 dark:text-white tracking-tight">My Wishlist</h1>
                     </div>
-                    <span className="bg-pink-500 text-white text-sm font-bold px-4 py-1.5 rounded-full self-start sm:self-auto">
+                    <span className="bg-pink-500 text-white text-sm font-bold px-4 py-1.5 rounded-full self-start sm:self-auto shadow-lg shadow-pink-500/20">
                         {wishlist.length} {wishlist.length === 1 ? 'item' : 'items'}
                     </span>
                 </div>
@@ -69,32 +69,32 @@ const WishlistPage = () => {
                 {wishlist.length === 0 ? (
                     <div className="flex flex-col items-center justify-center py-20 gap-4">
                         <div className="text-6xl">💝</div>
-                        <h2 className="text-xl font-bold text-white">Your wishlist is empty</h2>
-                        <p className="text-gray-400 text-sm">Add items to your wishlist to see them here</p>
-                        <button className="px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold rounded-xl text-sm hover:opacity-90 transition-all duration-200 border-none cursor-pointer" onClick={() => navigate('/category')}>Continue Shopping</button>
+                        <h2 className="text-xl font-bold text-slate-900 dark:text-white">Your wishlist is empty</h2>
+                        <p className="text-slate-500 dark:text-gray-400 text-sm">Add items to your wishlist to see them here</p>
+                        <button className="px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold rounded-xl text-sm hover:opacity-90 transition-all duration-200 border-none cursor-pointer shadow-lg shadow-purple-500/20" onClick={() => navigate('/category')}>Continue Shopping</button>
                     </div>
                 ) : (
                     <div className="grid grid-cols-1 min-[360px]:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 min-[360px]:gap-2.5 sm:gap-4">
                         {wishlist.map(product => (
-                            <div key={product.id} className="min-w-0 bg-[#1e2235] rounded-xl overflow-hidden shadow-lg flex flex-col transition-all duration-200 sm:hover:scale-[1.02] hover:shadow-xl hover:shadow-purple-500/20 group">
-                                <div className="relative h-48 sm:h-52 bg-[#161929] overflow-hidden">
+                            <div key={product.id} className="min-w-0 bg-white dark:bg-[#1e2235] rounded-xl overflow-hidden shadow-lg dark:shadow-none border border-slate-100 dark:border-none flex flex-col transition-all duration-200 sm:hover:scale-[1.02] hover:shadow-xl hover:shadow-purple-500/20 group">
+                                <div className="relative h-48 sm:h-52 bg-slate-50 dark:bg-[#161929] overflow-hidden transition-colors duration-300">
                                     <img src={product.thumbnail} alt={product.title} className="w-full h-full object-contain p-2 transition-transform duration-300 group-hover:scale-110" />
-                                    <button className="absolute top-3 right-3 w-8 h-8 flex items-center justify-center rounded-full bg-red-500/20 text-white border-none cursor-pointer text-sm z-10 hover:bg-red-500/40 transition-all duration-200" onClick={() => removeFromWishlist(product.id)} title="Remove from wishlist">×</button>
+                                    <button className="absolute top-3 right-3 w-8 h-8 flex items-center justify-center rounded-full bg-red-500/10 dark:bg-red-500/20 text-red-600 dark:text-white border-none cursor-pointer text-sm z-10 hover:bg-red-500/30 dark:hover:bg-red-500/40 transition-all duration-200" onClick={() => removeFromWishlist(product.id)} title="Remove from wishlist">×</button>
                                 </div>
-                                <div className="p-4 flex flex-col flex-grow gap-1.5">
-                                    <h3 className="text-sm sm:text-base font-bold text-white line-clamp-2 leading-snug">{product.title}</h3>
-                                    {product.brand && <p className="text-gray-500 text-xs">{product.brand}</p>}
+                                <div className="p-4 flex flex-col flex-grow gap-1.5 bg-white dark:bg-[#1e2235] transition-colors duration-300">
+                                    <h3 className="text-sm sm:text-base font-bold text-slate-900 dark:text-white line-clamp-2 leading-snug">{product.title}</h3>
+                                    {product.brand && <p className="text-slate-500 dark:text-gray-500 text-xs">{product.brand}</p>}
                                     <div className="flex items-center gap-1">
                                         {renderStars(product.rating)}
-                                        <span className="text-gray-500 text-xs">({product.reviews?.length || 0})</span>
+                                        <span className="text-slate-400 dark:text-gray-500 text-xs">({product.reviews?.length || 0})</span>
                                     </div>
                                     <div className="flex items-center gap-2 flex-wrap">
-                                        <span className="text-green-400 font-bold text-lg">₹{product.price.toFixed(2)}</span>
+                                        <span className="text-emerald-600 dark:text-green-400 font-bold text-lg">₹{product.price.toFixed(2)}</span>
                                         {product.discountPercentage > 0 && (
                                             <span className="bg-orange-500 text-white text-xs rounded px-1 py-0.5 font-semibold">-{Math.round(product.discountPercentage)}%</span>
                                         )}
                                     </div>
-                                    <button className="w-full py-2 rounded-lg font-semibold text-sm bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:opacity-90 transition-all duration-200 mt-auto border-none cursor-pointer active:scale-[0.98]" onClick={() => addToCart(product)}>🛒 Add to Cart</button>
+                                    <button className="w-full py-2 rounded-lg font-semibold text-sm bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:opacity-90 transition-all duration-200 mt-auto border-none cursor-pointer active:scale-[0.98] shadow-lg shadow-purple-500/20" onClick={() => addToCart(product)}>🛒 Add to Cart</button>
                                 </div>
                             </div>
                         ))}

@@ -64,54 +64,54 @@ const LoginModal = ({ isOpen, onClose, onLogin }) => {
 
     if (!isOpen) return null;
 
-    const inputClass = (field) => `w-full rounded-lg border ${errors[field] ? 'border-red-500' : 'border-gray-600'} bg-[#1e2235] text-white p-3 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition-all duration-200 text-sm sm:text-base`;
+    const inputClass = (field) => `w-full rounded-lg border ${errors[field] ? 'border-red-500' : 'border-slate-200 dark:border-gray-600'} bg-slate-50 dark:bg-[#1e2235] text-slate-900 dark:text-white p-3 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition-all duration-200 text-sm sm:text-base`;
 
     return (
-        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-[1000] flex items-end sm:items-center justify-center p-0 sm:p-4 pb-[env(safe-area-inset-bottom,0px)] sm:pb-4" onClick={onClose}>
-            <div className="bg-[#0f172a] border border-gray-800 rounded-t-2xl sm:rounded-2xl w-full max-w-md max-h-[min(90dvh,calc(100dvh-env(safe-area-inset-top)-env(safe-area-inset-bottom)))] overflow-y-auto mx-auto p-5 sm:p-10 shadow-2xl shadow-purple-500/10 relative sm:my-auto" onClick={(e) => e.stopPropagation()}>
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-[1000] flex items-end sm:items-center justify-center p-0 sm:p-4 pb-[env(safe-area-inset-bottom,0px)] sm:pb-4 transition-all duration-300" onClick={onClose}>
+            <div className="bg-white dark:bg-[#0f172a] border border-slate-200 dark:border-gray-800 rounded-t-2xl sm:rounded-2xl w-full max-w-md max-h-[min(90dvh,calc(100dvh-env(safe-area-inset-top)-env(safe-area-inset-bottom)))] overflow-y-auto mx-auto p-5 sm:p-10 shadow-2xl dark:shadow-purple-500/10 relative sm:my-auto transition-colors duration-300" onClick={(e) => e.stopPropagation()}>
                 <div className="flex items-center justify-between mb-6">
-                    <h2 className="text-xl sm:text-2xl font-bold text-white tracking-tight">{isLogin ? 'Login to ShopZone' : 'Create Account'}</h2>
-                    <button className="w-8 h-8 flex items-center justify-center rounded-full bg-white/5 text-gray-400 hover:text-white hover:bg-white/10 border-none cursor-pointer transition-all duration-200" onClick={onClose}>✕</button>
+                    <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight">{isLogin ? 'Login to ShopZone' : 'Create Account'}</h2>
+                    <button className="w-8 h-8 flex items-center justify-center rounded-full bg-slate-100 dark:bg-white/5 text-slate-500 dark:text-gray-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-white/10 border-none cursor-pointer transition-all duration-200" onClick={onClose}>✕</button>
                 </div>
                 <form onSubmit={handleSubmit} className="space-y-4">
                     {!isLogin && (
                         <>
                             <div>
-                                <label className="block text-gray-400 text-xs uppercase tracking-wider font-semibold mb-1.5">First Name</label>
+                                <label className="block text-slate-500 dark:text-gray-400 text-xs uppercase tracking-wider font-semibold mb-1.5">First Name</label>
                                 <input type="text" name="firstName" className={inputClass('firstName')} value={formData.firstName} onChange={handleChange} required />
-                                {errors.firstName && <span className="text-red-400 text-xs mt-1 block">{errors.firstName}</span>}
+                                {errors.firstName && <span className="text-red-500 dark:text-red-400 text-xs mt-1 block">{errors.firstName}</span>}
                             </div>
                             <div>
-                                <label className="block text-gray-400 text-xs uppercase tracking-wider font-semibold mb-1.5">Last Name</label>
+                                <label className="block text-slate-500 dark:text-gray-400 text-xs uppercase tracking-wider font-semibold mb-1.5">Last Name</label>
                                 <input type="text" name="lastName" className={inputClass('lastName')} value={formData.lastName} onChange={handleChange} required />
-                                {errors.lastName && <span className="text-red-400 text-xs mt-1 block">{errors.lastName}</span>}
+                                {errors.lastName && <span className="text-red-500 dark:text-red-400 text-xs mt-1 block">{errors.lastName}</span>}
                             </div>
                         </>
                     )}
                     <div>
-                        <label className="block text-gray-400 text-xs uppercase tracking-wider font-semibold mb-1.5">Email</label>
+                        <label className="block text-slate-500 dark:text-gray-400 text-xs uppercase tracking-wider font-semibold mb-1.5">Email</label>
                         <input type="email" name="email" className={inputClass('email')} value={formData.email} onChange={handleChange} required />
-                        {errors.email && <span className="text-red-400 text-xs mt-1 block">{errors.email}</span>}
+                        {errors.email && <span className="text-red-500 dark:text-red-400 text-xs mt-1 block">{errors.email}</span>}
                     </div>
                     <div>
-                        <label className="block text-gray-400 text-xs uppercase tracking-wider font-semibold mb-1.5">Password</label>
+                        <label className="block text-slate-500 dark:text-gray-400 text-xs uppercase tracking-wider font-semibold mb-1.5">Password</label>
                         <input type="password" name="password" className={inputClass('password')} value={formData.password} onChange={handleChange} required />
-                        {errors.password && <span className="text-red-400 text-xs mt-1 block">{errors.password}</span>}
+                        {errors.password && <span className="text-red-500 dark:text-red-400 text-xs mt-1 block">{errors.password}</span>}
                     </div>
                     {!isLogin && (
                         <div>
-                            <label className="block text-gray-400 text-xs uppercase tracking-wider font-semibold mb-1.5">Confirm Password</label>
+                            <label className="block text-slate-500 dark:text-gray-400 text-xs uppercase tracking-wider font-semibold mb-1.5">Confirm Password</label>
                             <input type="password" name="confirmPassword" className={inputClass('confirmPassword')} value={formData.confirmPassword} onChange={handleChange} required />
-                            {errors.confirmPassword && <span className="text-red-400 text-xs mt-1 block">{errors.confirmPassword}</span>}
+                            {errors.confirmPassword && <span className="text-red-500 dark:text-red-400 text-xs mt-1 block">{errors.confirmPassword}</span>}
                         </div>
                     )}
                     <button type="submit" className="w-full py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold rounded-xl text-sm sm:text-base hover:opacity-90 transition-all duration-200 border-none cursor-pointer active:scale-[0.98]">
                         {isLogin ? 'Login' : 'Create Account'}
                     </button>
                 </form>
-                <p className="mt-4 text-sm text-gray-400 text-center">
+                <p className="mt-4 text-sm text-slate-500 dark:text-gray-400 text-center">
                     {isLogin ? "Don't have an account? " : "Already have an account? "}
-                    <button type="button" onClick={toggleMode} className="bg-transparent border-none text-purple-400 cursor-pointer underline text-sm p-0 font-medium hover:text-purple-300 transition-colors duration-200">
+                    <button type="button" onClick={toggleMode} className="bg-transparent border-none text-purple-600 dark:text-purple-400 cursor-pointer underline text-sm p-0 font-medium hover:text-purple-700 dark:hover:text-purple-300 transition-colors duration-200">
                         {isLogin ? 'Sign Up' : 'Login'}
                     </button>
                 </p>
