@@ -60,17 +60,27 @@ const useContactForm = () => {
         setIsSubmitting(true);
         setSubmitStatus(null);
 
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz0ovzDXWahSESEX0AJ1nPyzFTcJzsUl8IRvLAtg_mH4N2f0I5MS1Rop_MCf5i8tPd7-w/exec";
+
         try {
-            // Simulate API call
-            await new Promise(resolve => setTimeout(resolve, 1500));
+            const response = await fetch(GOOGLE_SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors', // Google Scripts often require no-cors for cross-domain POST if not specifically configured
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            });
+
+            // Since mode is 'no-cors', we can't reliably check response.ok or response.json()
+            // However, the browser will still send the data.
+            // If the user wants to read the response, they need to configure CORS on the GAS side.
+            // But for standard GAS Web Apps, 'no-cors' is the safest bet to ensure the request is sent.
             
-            // Here you would typically send the data to your backend
-            console.log('Form submitted:', formData);
-            
+            // If we assume success if no error was thrown during fetch
             setSubmitStatus('success');
             setFormData({ name: '', email: '', message: '' });
             
-            // Reset success message after 5 seconds
             setTimeout(() => {
                 setSubmitStatus(null);
             }, 5000);
